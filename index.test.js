@@ -10,11 +10,13 @@ function run(input, output, options) {
 }
 
 it('does nothing by default', () => {
-    return run('a {}', 'a {}', {});
+    var input = 'a {}';
+    return run(input, input, {});
 });
 
 it('does nothing', () => {
-    return run('a {}', 'a {}', {
+    var input = 'a {}';
+    return run(input, input, {
         filter: function () {
             return true;
         }
@@ -30,19 +32,27 @@ it('removes everything', () => {
 });
 
 it('removes empty @media', () => {
-    return run('a {} @media () {}', 'a {}', {});
+    var input = 'a {} @media () {}',
+        output = 'a {}';
+    return run(input, output, {});
 });
 
 it('removes @font-face', () => {
-    return run('a {} @font-face {}', 'a {}', {});
+    var input = 'a {} @font-face {}',
+        output = 'a {}';
+    return run(input, output, {});
 });
 
 it('removes @page', () => {
-    return run('a {} @page {}', 'a {}', {});
+    var input = 'a {} @page {}',
+        output = 'a {}';
+    return run(input, output, {});
 });
 
 it('removes @document', () => {
-    return run('a {} @document {}', 'a {}', {});
+    var input = 'a {} @document {}',
+        output = 'a {}';
+    return run(input, output, {});
 });
 
 it('removes all classes', () => {
@@ -72,6 +82,56 @@ it('removes a selector starting with an ID', () => {
     return run(input, output, {
         filter: (selector) => {
             return selector[0] !== '#';
+        }
+    });
+});
+
+it('removes a selector starting with an ID and whitespace', () => {
+    var input = '   #main {}    .c {}',
+        output = '   .c {}';
+    return run(input, output, {
+        filter: (selector) => {
+            return selector[0] !== '#';
+        }
+    });
+});
+
+it('removes a single selector', () => {
+    var input = '.a, .b, .c {}',
+        output = '.b, .c {}';
+    return run(input, output, {
+        filter: (selector, parts) => {
+            return parts.indexOf('.a') === -1;
+        }
+    });
+});
+
+it('removes multiple selectors', () => {
+    var input = '.a, .b, .c {}',
+        output = '.a {}';
+    return run(input, output, {
+        filter: (selector, parts) => {
+            return parts.indexOf('.b') === -1 && parts.indexOf('.c') === -1;
+        }
+    });
+});
+
+it('does not remove @media', () => {
+    var input = '@media screen {.b {}} .b {} .c {}',
+        output = '@media screen {.b {}} .b {}';
+    return run(input, output, {
+        filter: (selector, parts) => {
+            return parts.indexOf('.b') > -1;
+        }
+    });
+});
+
+it('keeps @media when removing rules', () => {
+    var input = '@media screen {.b {}} @media screen {.c {}}',
+        output = '@media screen {.b {}}';
+    return run(input, output, {
+        filter: (selector, parts) => {
+            return parts.indexOf('.b') > -1;
         }
     });
 });
