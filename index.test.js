@@ -135,3 +135,33 @@ it('keeps @media when removing rules', () => {
         }
     });
 });
+
+it('keeps @media when removing rules with multiple selectors', () => {
+    var input = '@media screen {.b strong {}} @media screen {.c {}}',
+        output = '@media screen {.b strong {}}';
+    return run(input, output, {
+        filter: (selector, parts) => {
+            return parts.indexOf('.b') > -1;
+        }
+    });
+});
+
+it('removes adjacent sibling selectors', () => {
+    var input = '.a, .b + .c {} .b+.c {}',
+        output = '.a {}';
+    return run(input, output, {
+        filter: (selector) => {
+            return selector.indexOf('+') === -1;
+        }
+    });
+});
+
+it('removes direct sibling selectors', () => {
+    var input = '.a, .b ~ .c {} .b~.c {}',
+        output = '.a {}';
+    return run(input, output, {
+        filter: (selector) => {
+            return selector.indexOf('~') === -1;
+        }
+    });
+});
