@@ -62,11 +62,11 @@ For example, a function which only keeps the `.styleguide` class:
 With the input:
 
 ```css
-.b.styleguide span,
-.b span {
+.styleguide span,
+.button span {
 	color: red;
 }
-.b {
+.button {
 	color: blue;
 }
 ```
@@ -74,7 +74,7 @@ With the input:
 Will output:
 
 ```css
-a.styleguide span {
+.styleguide span {
 	color: red;
 }
 ```
