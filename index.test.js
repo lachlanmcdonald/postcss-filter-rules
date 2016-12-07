@@ -1,4 +1,5 @@
 /* jshint esversion: 6 */
+
 const postcss = require('postcss');
 const plugin = require('./');
 
@@ -9,215 +10,248 @@ function run(input, output, options) {
     });
 }
 
-it('does what the readme says', () => {
-    'use strict';
+var sampleCharset = '@charset "UTF-8";',
+    sampleImport = '@import "/css/sample.css";',
+    sampleKeyframes,
+    sampleFontFace;
 
-    let input = `.styleguide span,
-.button span {
-    color: red;
-}
-.button {
-    color: blue;
+sampleKeyframes = `@keyframes test {
+    0% { color: red; }
+    100% { color: blue; }
 }`;
-    let output = `.styleguide span {
-    color: red;
+
+sampleFontFace = `@font-face {
+    font-family: "Bitstream Vera Serif Bold";
+    src: url("https://mdn.mozillademos.org/files/2468/VeraSeBd.ttf");
 }`;
-    return run(input, output, {
-        filter: (selector, parts) => {
-            return parts.indexOf('.styleguide') > -1;
-        }
+
+describe('defaults', () => {
+    it('does what the readme says', () => {
+        'use strict';
+
+        let input = `.styleguide span,
+    .button span {
+        color: red;
+    }
+    .button {
+        color: blue;
+    }`;
+        let output = `.styleguide span {
+        color: red;
+    }`;
+        return run(input, output, {
+            filter: (selector, parts) => {
+                return parts.indexOf('.styleguide') > -1;
+            }
+        });
+    });
+
+    it('does nothing by default', () => {
+        'use strict';
+
+        let input = 'a {}';
+        return run(input, input, {});
+    });
+
+    it('keeps rules when filter returns true', () => {
+        'use strict';
+
+        let input = 'a {}';
+        return run(input, input, {
+            filter: function () {
+                return true;
+            }
+        });
+    });
+
+    it('removes rules when filter returns false', () => {
+        'use strict';
+
+        return run('a {} .b {} #c {}', '', {
+            filter: () => {
+                return false;
+            }
+        });
     });
 });
 
-it('does nothing by default', () => {
-    'use strict';
+describe('@media', () => {
+    it('removes empty @media', () => {
+        'use strict';
+        return run('@media () {}', '', {});
+    });
 
-    let input = 'a {}';
-    return run(input, input, {});
-});
+    it('does not remove @media', () => {
+        'use strict';
 
-it('does nothing', () => {
-    'use strict';
+        let input = '@media screen {.b {}} .b {} .c {}',
+            output = '@media screen {.b {}} .b {}';
+        return run(input, output, {
+            filter: (selector, parts) => {
+                return parts.indexOf('.b') > -1;
+            }
+        });
+    });
 
-    let input = 'a {}';
-    return run(input, input, {
-        filter: function () {
-            return true;
-        }
+    it('keeps @media when removing rules', () => {
+        'use strict';
+
+        let input = '@media screen {.b {}} @media screen {.c {}}',
+            output = '@media screen {.b {}}';
+        return run(input, output, {
+            filter: (selector, parts) => {
+                return parts.indexOf('.b') > -1;
+            }
+        });
+    });
+
+    it('keeps @media when removing rules with multiple selectors', () => {
+        'use strict';
+
+        let input = '@media screen {.b strong {}} @media screen {.c {}}',
+            output = '@media screen {.b strong {}}';
+        return run(input, output, {
+            filter: (selector, parts) => {
+                return parts.indexOf('.b') > -1;
+            }
+        });
     });
 });
 
-it('removes everything', () => {
-    'use strict';
+describe('at-rules', () => {
+    it('keeps @charset by default', () => {
+        'use strict';
+        return run(sampleCharset, sampleCharset, {});
+    });
 
-    return run('a {} .b {} #c {}', '', {
-        filter: () => {
-            return false;
-        }
+    it('keeps @import by default', () => {
+        'use strict';
+        return run(sampleImport, sampleImport, {});
+    });
+
+    it('keeps @keyframes by default', () => {
+        'use strict';
+        return run(sampleKeyframes, sampleKeyframes, {});
+    });
+
+    it('removes @font-face by default', () => {
+        'use strict';
+        return run(sampleFontFace, '', {});
+    });
+
+    it('removes empty at-rules', () => {
+        'use strict';
+
+        let input = '@font-face {} @media {} @page {}';
+        return run(input, '', {});
+    });
+
+    it('removes all at-rules when keepAtRules is an empty array', () => {
+        'use strict';
+
+        let input = [sampleCharset, sampleImport, sampleKeyframes].join('\n');
+        return run(input, '', {
+            keepAtRules: []
+        });
     });
 });
 
-it('removes empty @media', () => {
-    'use strict';
+describe('filter', () => {
 
-    let input = 'a {} @media () {}',
-        output = 'a {}';
-    return run(input, output, {});
-});
+    it('removes all classes', () => {
+        'use strict';
 
-it('removes @font-face', () => {
-    'use strict';
+        let input = '#a {} .b {} .c {} #d {}',
+            output = '#a {} #d {}';
 
-    let input = 'a {} @font-face {}',
-        output = 'a {}';
-    return run(input, output, {});
-});
-
-it('removes @page', () => {
-    'use strict';
-
-    let input = 'a {} @page {}',
-        output = 'a {}';
-    return run(input, output, {});
-});
-
-it('removes @document', () => {
-    'use strict';
-
-    let input = 'a {} @document {}',
-        output = 'a {}';
-    return run(input, output, {});
-});
-
-it('removes all classes', () => {
-    'use strict';
-
-    let input = '#a {} .b {} .c {} #d {}',
-        output = '#a {} #d {}';
-
-    return run(input, output, {
-        filter: (selector) => {
-            return !/\.-?[_a-zA-Z]+[_a-zA-Z0-9-]*/.test(selector);
-        }
+        return run(input, output, {
+            filter: (selector) => {
+                return !/\.-?[_a-zA-Z]+[_a-zA-Z0-9-]*/.test(selector);
+            }
+        });
     });
-});
 
-it('removes a specific class', () => {
-    'use strict';
+    it('removes a specific class', () => {
+        'use strict';
 
-    let input = '#main .a strong {} #main .c strong {}',
-        output = '#main .a strong {}';
-    return run(input, output, {
-        filter: (selector, parts) => {
-            return parts.indexOf('.c') === -1;
-        }
+        let input = '#main .a strong {} #main .c strong {}',
+            output = '#main .a strong {}';
+        return run(input, output, {
+            filter: (selector, parts) => {
+                return parts.indexOf('.c') === -1;
+            }
+        });
     });
-});
 
-it('removes a selector starting with an ID', () => {
-    'use strict';
+    it('removes a selector starting with an ID', () => {
+        'use strict';
 
-    let input = '#main {} .c {}',
-        output = '.c {}';
-    return run(input, output, {
-        filter: (selector) => {
-            return selector[0] !== '#';
-        }
+        let input = '#main {} .c {}',
+            output = '.c {}';
+        return run(input, output, {
+            filter: (selector) => {
+                return selector[0] !== '#';
+            }
+        });
     });
-});
 
-it('removes a selector starting with an ID and whitespace', () => {
-    'use strict';
+    it('removes a selector starting with an ID and whitespace', () => {
+        'use strict';
 
-    let input = '   #main {}    .c {}',
-        output = '   .c {}';
-    return run(input, output, {
-        filter: (selector) => {
-            return selector[0] !== '#';
-        }
+        let input = '   #main {}    .c {}',
+            output = '   .c {}';
+        return run(input, output, {
+            filter: (selector) => {
+                return selector[0] !== '#';
+            }
+        });
     });
-});
 
-it('removes a single selector', () => {
-    'use strict';
+    it('removes a single selector', () => {
+        'use strict';
 
-    let input = '.a, .b, .c {}',
-        output = '.b, .c {}';
-    return run(input, output, {
-        filter: (selector, parts) => {
-            return parts.indexOf('.a') === -1;
-        }
+        let input = '.a, .b, .c {}',
+            output = '.b, .c {}';
+        return run(input, output, {
+            filter: (selector, parts) => {
+                return parts.indexOf('.a') === -1;
+            }
+        });
     });
-});
 
-it('removes multiple selectors', () => {
-    'use strict';
+    it('removes multiple selectors', () => {
+        'use strict';
 
-    let input = '.a, .b, .c {}',
-        output = '.a {}';
-    return run(input, output, {
-        filter: (selector, parts) => {
-            return parts.indexOf('.b') === -1 && parts.indexOf('.c') === -1;
-        }
+        let input = '.a, .b, .c {}',
+            output = '.a {}';
+        return run(input, output, {
+            filter: (selector, parts) => {
+                return parts.indexOf('.b') === -1 && parts.indexOf('.c') === -1;
+            }
+        });
     });
-});
 
-it('does not remove @media', () => {
-    'use strict';
+    it('removes adjacent sibling selectors', () => {
+        'use strict';
 
-    let input = '@media screen {.b {}} .b {} .c {}',
-        output = '@media screen {.b {}} .b {}';
-    return run(input, output, {
-        filter: (selector, parts) => {
-            return parts.indexOf('.b') > -1;
-        }
+        let input = '.a, .b + .c {} .b+.c {}',
+            output = '.a {}';
+        return run(input, output, {
+            filter: (selector) => {
+                return selector.indexOf('+') === -1;
+            }
+        });
     });
-});
 
-it('keeps @media when removing rules', () => {
-    'use strict';
+    it('removes direct sibling selectors', () => {
+        'use strict';
 
-    let input = '@media screen {.b {}} @media screen {.c {}}',
-        output = '@media screen {.b {}}';
-    return run(input, output, {
-        filter: (selector, parts) => {
-            return parts.indexOf('.b') > -1;
-        }
-    });
-});
-
-it('keeps @media when removing rules with multiple selectors', () => {
-    'use strict';
-
-    let input = '@media screen {.b strong {}} @media screen {.c {}}',
-        output = '@media screen {.b strong {}}';
-    return run(input, output, {
-        filter: (selector, parts) => {
-            return parts.indexOf('.b') > -1;
-        }
-    });
-});
-
-it('removes adjacent sibling selectors', () => {
-    'use strict';
-
-    let input = '.a, .b + .c {} .b+.c {}',
-        output = '.a {}';
-    return run(input, output, {
-        filter: (selector) => {
-            return selector.indexOf('+') === -1;
-        }
-    });
-});
-
-it('removes direct sibling selectors', () => {
-    'use strict';
-
-    let input = '.a, .b ~ .c {} .b~.c {}',
-        output = '.a {}';
-    return run(input, output, {
-        filter: (selector) => {
-            return selector.indexOf('~') === -1;
-        }
+        let input = '.a, .b ~ .c {} .b~.c {}',
+            output = '.a {}';
+        return run(input, output, {
+            filter: (selector) => {
+                return selector.indexOf('~') === -1;
+            }
+        });
     });
 });
