@@ -10,14 +10,16 @@ function run(input, output, options) {
 }
 
 it('does what the readme says', () => {
-    var input = `.styleguide span,
+    'use strict';
+
+    let input = `.styleguide span,
 .button span {
     color: red;
 }
 .button {
     color: blue;
 }`;
-    var output = `.styleguide span {
+    let output = `.styleguide span {
     color: red;
 }`;
     return run(input, output, {
@@ -28,12 +30,16 @@ it('does what the readme says', () => {
 });
 
 it('does nothing by default', () => {
-    var input = 'a {}';
+    'use strict';
+
+    let input = 'a {}';
     return run(input, input, {});
 });
 
 it('does nothing', () => {
-    var input = 'a {}';
+    'use strict';
+
+    let input = 'a {}';
     return run(input, input, {
         filter: function () {
             return true;
@@ -42,6 +48,8 @@ it('does nothing', () => {
 });
 
 it('removes everything', () => {
+    'use strict';
+
     return run('a {} .b {} #c {}', '', {
         filter: () => {
             return false;
@@ -50,31 +58,41 @@ it('removes everything', () => {
 });
 
 it('removes empty @media', () => {
-    var input = 'a {} @media () {}',
+    'use strict';
+
+    let input = 'a {} @media () {}',
         output = 'a {}';
     return run(input, output, {});
 });
 
 it('removes @font-face', () => {
-    var input = 'a {} @font-face {}',
+    'use strict';
+
+    let input = 'a {} @font-face {}',
         output = 'a {}';
     return run(input, output, {});
 });
 
 it('removes @page', () => {
-    var input = 'a {} @page {}',
+    'use strict';
+
+    let input = 'a {} @page {}',
         output = 'a {}';
     return run(input, output, {});
 });
 
 it('removes @document', () => {
-    var input = 'a {} @document {}',
+    'use strict';
+
+    let input = 'a {} @document {}',
         output = 'a {}';
     return run(input, output, {});
 });
 
 it('removes all classes', () => {
-    var input = '#a {} .b {} .c {} #d {}',
+    'use strict';
+
+    let input = '#a {} .b {} .c {} #d {}',
         output = '#a {} #d {}';
 
     return run(input, output, {
@@ -85,7 +103,9 @@ it('removes all classes', () => {
 });
 
 it('removes a specific class', () => {
-    var input = '#main .a strong {} #main .c strong {}',
+    'use strict';
+
+    let input = '#main .a strong {} #main .c strong {}',
         output = '#main .a strong {}';
     return run(input, output, {
         filter: (selector, parts) => {
@@ -95,7 +115,9 @@ it('removes a specific class', () => {
 });
 
 it('removes a selector starting with an ID', () => {
-    var input = '#main {} .c {}',
+    'use strict';
+
+    let input = '#main {} .c {}',
         output = '.c {}';
     return run(input, output, {
         filter: (selector) => {
@@ -105,7 +127,9 @@ it('removes a selector starting with an ID', () => {
 });
 
 it('removes a selector starting with an ID and whitespace', () => {
-    var input = '   #main {}    .c {}',
+    'use strict';
+
+    let input = '   #main {}    .c {}',
         output = '   .c {}';
     return run(input, output, {
         filter: (selector) => {
@@ -115,7 +139,9 @@ it('removes a selector starting with an ID and whitespace', () => {
 });
 
 it('removes a single selector', () => {
-    var input = '.a, .b, .c {}',
+    'use strict';
+
+    let input = '.a, .b, .c {}',
         output = '.b, .c {}';
     return run(input, output, {
         filter: (selector, parts) => {
@@ -125,7 +151,9 @@ it('removes a single selector', () => {
 });
 
 it('removes multiple selectors', () => {
-    var input = '.a, .b, .c {}',
+    'use strict';
+
+    let input = '.a, .b, .c {}',
         output = '.a {}';
     return run(input, output, {
         filter: (selector, parts) => {
@@ -135,7 +163,9 @@ it('removes multiple selectors', () => {
 });
 
 it('does not remove @media', () => {
-    var input = '@media screen {.b {}} .b {} .c {}',
+    'use strict';
+
+    let input = '@media screen {.b {}} .b {} .c {}',
         output = '@media screen {.b {}} .b {}';
     return run(input, output, {
         filter: (selector, parts) => {
@@ -145,7 +175,9 @@ it('does not remove @media', () => {
 });
 
 it('keeps @media when removing rules', () => {
-    var input = '@media screen {.b {}} @media screen {.c {}}',
+    'use strict';
+
+    let input = '@media screen {.b {}} @media screen {.c {}}',
         output = '@media screen {.b {}}';
     return run(input, output, {
         filter: (selector, parts) => {
@@ -155,7 +187,9 @@ it('keeps @media when removing rules', () => {
 });
 
 it('keeps @media when removing rules with multiple selectors', () => {
-    var input = '@media screen {.b strong {}} @media screen {.c {}}',
+    'use strict';
+
+    let input = '@media screen {.b strong {}} @media screen {.c {}}',
         output = '@media screen {.b strong {}}';
     return run(input, output, {
         filter: (selector, parts) => {
@@ -165,7 +199,9 @@ it('keeps @media when removing rules with multiple selectors', () => {
 });
 
 it('removes adjacent sibling selectors', () => {
-    var input = '.a, .b + .c {} .b+.c {}',
+    'use strict';
+
+    let input = '.a, .b + .c {} .b+.c {}',
         output = '.a {}';
     return run(input, output, {
         filter: (selector) => {
@@ -175,7 +211,9 @@ it('removes adjacent sibling selectors', () => {
 });
 
 it('removes direct sibling selectors', () => {
-    var input = '.a, .b ~ .c {} .b~.c {}',
+    'use strict';
+
+    let input = '.a, .b ~ .c {} .b~.c {}',
         output = '.a {}';
     return run(input, output, {
         filter: (selector) => {
