@@ -17,7 +17,7 @@ npm install postcss-filter-selectors --save-dev
 postcss([ require('postcss-filter-rules') ])
 ```
 
-With [grunt-postcss]:
+Or with [grunt-postcss]:
 
 ```js
 grunt.initConfig({
@@ -32,13 +32,13 @@ grunt.initConfig({
 		}
 	}
 });
-``` 
+```
 
 See [PostCSS] docs for examples for your environment.
 
 ## Options
 
-**filter**  
+**filter**
 Type: `Function`
 
 Function used to filter selectors. Called for each selector in a rule. Selectors are kept if the function returns `true`, otherwise they are removed. If all of the selectors for a rule are removed, the rule is also removed. If all rules within a `@media` block are removed, the block itself is also removed.
@@ -49,7 +49,7 @@ The function receives two arguments, `selector` and `parts`:
 - **parts** (Array): An array of elements, classes, IDs and pseudo-classes in the selector. Can be used to quickly search for the existence of classes or IDs.  
 i.e. for the selector `.a + strong.b`, the argument will contain: `[".a", "strong.b"]`
 
-For example, a function which only keeps the `.styleguide` class:
+For example, to keep only the `.styleguide` class:
 
 ```js
 {
@@ -59,7 +59,7 @@ For example, a function which only keeps the `.styleguide` class:
 }
 ```
 
-With the input:
+With the input CSS:
 
 ```css
 .styleguide span,
