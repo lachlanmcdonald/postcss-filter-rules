@@ -9,6 +9,24 @@ function run(input, output, options) {
     });
 }
 
+it('does what the readme says', () => {
+    var input = `.styleguide span,
+.button span {
+    color: red;
+}
+.button {
+    color: blue;
+}`;
+    var output = `.styleguide span {
+    color: red;
+}`;
+    return run(input, output, {
+        filter: (selector, parts) => {
+            return parts.indexOf('.styleguide') > -1;
+        }
+    });
+});
+
 it('does nothing by default', () => {
     var input = 'a {}';
     return run(input, input, {});
