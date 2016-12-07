@@ -1,14 +1,21 @@
+/* eslint max-len: 0 */
+
 var postcss = require('postcss');
 
 module.exports = postcss.plugin('postcss-filter-rules', function (options) {
     options = options || {};
 
-    var filterIfEmpty = ['media'],
-        cssSeparator = /\s+|\s*[~+>]\s*/;
+    var cssSeparator = /\s+|\s*[~+>]\s*/,
+        defaultSafeAtRules = ['charset', 'import', 'keyframes'],
+        removeAtRules = ['font-face', 'charset', 'import', 'keyframes'];
 
     options.filter = options.filter || function () {
         return true;
     };
+
+    if (Array.isArray(options.keepAtRules) === false) {
+        options.keepAtRules = defaultSafeAtRules;
+    }
 
     return function (root) {
         root.walkRules(function (rule) {
@@ -23,12 +30,14 @@ module.exports = postcss.plugin('postcss-filter-rules', function (options) {
             }
         });
 
-        root.walkAtRules(function (atRule) {
-            var removeAtRule = filterIfEmpty.indexOf(atRule.name) === -1,
-                emptyAtRule = atRule.nodes.length === 0;
+        root.walkAtRules(function (rule) {
+            if (options.keepAtRules.indexOf(rule.name) === -1) {
+                var isEmpty = Array.isArray(rule.nodes) && rule.nodes.length === 0,
+                    removeByDefault = removeAtRules.indexOf(rule.name) >= 0;
 
-            if (removeAtRule || emptyAtRule) {
-                atRule.parent.removeChild(atRule);
+                if (isEmpty || removeByDefault) {
+                    rule.parent.removeChild(rule);
+                }
             }
         });
     };
