@@ -41,7 +41,11 @@ See [PostCSS] docs for examples for your environment.
 **filter**
 Type: `Function`
 
-Function used to filter selectors. Called for each selector in a rule. Selectors are kept if the function returns `true`, otherwise they are removed. If all of the selectors for a rule are removed, the rule is also removed. If all rules within a `@media` block are removed, the block itself is also removed.
+Function used to filter selectors. Called for each selector in a rule.
+
+- Selectors are kept if the function returns `true`, otherwise they are removed.
+- If all of the selectors for a rule are removed, the rule is also removed.
+- If all rules within an [at-rule] are removed, the block itself is also removed.
 
 The function receives two arguments, `selector` and `parts`:
 
@@ -79,13 +83,27 @@ Will output:
 }
 ```
 
+**keepAtRules**  
+Type: `Array` (Optional)  
+Default: `['charset', 'import', 'keyframes']`
+
+By default, [at-rules] are removed if they do not have any child rules. Additionally, `@font-face` is removed by default. To keep specific at-rules, provide an array of names to this option. For example:
+
+```js
+{
+	keepAtRules: ['font-face', 'import']
+}
+```
+
 ## License
 
 Licensed under the BSD 3-Clause License. See LICENSE for full license.
 
 [grunt-postcss]: https://github.com/nDmitry/grunt-postcss
-[PostCSS]: https://github.com/postcss/postcss
-[npm-img]: https://badge.fury.io/js/postcss-filter-rules.svg
-[npm]:     https://badge.fury.io/js/postcss-filter-rules
-[ci-img]:  https://travis-ci.org/lachlanmcdonald/postcss-filter-rules.svg
-[ci]:      https://travis-ci.org/lachlanmcdonald/postcss-filter-rules
+[PostCSS]:       https://github.com/postcss/postcss
+[npm-img]:       https://badge.fury.io/js/postcss-filter-rules.svg
+[npm]:           https://badge.fury.io/js/postcss-filter-rules
+[ci-img]:        https://travis-ci.org/lachlanmcdonald/postcss-filter-rules.svg
+[ci]:            https://travis-ci.org/lachlanmcdonald/postcss-filter-rules
+[at-rule]:       https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule
+[at-rules]:      https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule
