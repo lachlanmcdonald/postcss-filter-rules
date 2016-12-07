@@ -5,11 +5,13 @@
 
 [PostCSS] plugin to filter rules by applying a callback function on each selector. Can be used to filter out individual rules or remove all rules besides those you wish to keep.
 
+
 ## Installation
 
 ```shell
 npm install postcss-filter-selectors --save-dev
 ```
+
 
 ## Usage
 
@@ -35,6 +37,7 @@ grunt.initConfig({
 ```
 
 See [PostCSS] docs for examples for your environment.
+
 
 ## Options
 
@@ -95,9 +98,17 @@ By default, [at-rules] are removed if they do not have any child rules. Addition
 }
 ```
 
+
+## Todo
+
+- Write tests for the `parts` argument (`cssSeparator` variable in `index.js`)
+- Only keep a `@keyframes` rule when it is referenced by `animation-name` or the `animation` shorthand.
+- Only keep a `@font-face` rule when it is referenced by `font-family` or the `font` shorthand.
+
+
 ## License
 
-Licensed under the BSD 3-Clause License. See LICENSE for full license.
+Licensed under the BSD 3-Clause License.
 
 [grunt-postcss]: https://github.com/nDmitry/grunt-postcss
 [PostCSS]:       https://github.com/postcss/postcss
