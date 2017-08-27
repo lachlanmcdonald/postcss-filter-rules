@@ -1,10 +1,8 @@
 # PostCSS Filter Rules
 
-[![npm version][npm-img]][npm]
-[![Build Status][ci-img]][ci]
+[![npm version][npm-img]][npm] [![Build Status][ci-img]][ci]
 
-[PostCSS] plugin to filter rules by applying a callback function on each selector. Can be used to filter out individual rules or remove all rules besides those you wish to keep.
-
+[PostCSS] plugin that filters rules with a callback function on each selector. Can be used to filter out individual rules or remove all rules besides those you wish to keep.
 
 ## Installation
 
@@ -38,10 +36,9 @@ grunt.initConfig({
 
 See [PostCSS] docs for examples for your environment.
 
-
 ## Options
 
-**filter**
+**filter**  
 Type: `Function`
 
 Function used to filter selectors. Called for each selector in a rule.
@@ -52,7 +49,7 @@ Function used to filter selectors. Called for each selector in a rule.
 
 The function receives two arguments, `selector` and `parts`:
 
-- **selector** (String): The full selector, as authored in CSS
+- **selector** (String): The selector, as authored in CSS
 - **parts** (Array): An array of elements, classes, IDs and pseudo-classes in the selector. Can be used to quickly search for the existence of classes or IDs.  
 i.e. for the selector `.a + strong.b`, the argument will contain: `[".a", "strong.b"]`
 
@@ -90,7 +87,7 @@ Will output:
 Type: `Array` (Optional)  
 Default: `['charset', 'import', 'keyframes']`
 
-By default, [at-rules] are removed if they do not have any child rules. Additionally, `@font-face` is removed by default. To keep specific at-rules, provide an array of names to this option. For example:
+By default, `@font-face` and any [at-rules] that do not have any child rules are removed. To keep specific at-rules, provide an array of names to this option. For example:
 
 ```js
 {
@@ -98,13 +95,11 @@ By default, [at-rules] are removed if they do not have any child rules. Addition
 }
 ```
 
-
 ## Todo
 
 - Write tests for the `parts` argument (`cssSeparator` variable in `index.js`)
-- Only keep a `@keyframes` rule when it is referenced by `animation-name` or the `animation` shorthand.
-- Only keep a `@font-face` rule when it is referenced by `font-family` or the `font` shorthand.
-
+- Keep a `@keyframes` rule when it is referenced by `animation-name` or the `animation` shorthand.
+- Keep a `@font-face` rule when it is referenced by `font-family` or the `font` shorthand.
 
 ## License
 
