@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.2
+
+- Fix for [incorrect dependancies in package.json](https://github.com/lachlanmcdonald/postcss-filter-rules/issues/1)
+
 ## 0.2.1
 
 - `keepAtRules` now accepts a value of `true`, which will keep all at-rules
