@@ -87,13 +87,16 @@ Will output:
 Type: `Array` (Optional)  
 Default: `['charset', 'import', 'keyframes']`
 
-By default, `@font-face` and any empty [at-rules] (no child rules after filtering) are removed. To keep specific at-rules, provide an array of names to this option. For example:
+By default, `@font-face` and any empty [at-rules] (after filtering) are removed. To keep specific at-rules, provide an array of names to this option. For example:
 
 ```json
 {
 	keepAtRules: ['font-face', 'import']
 }
 ```
+
+- To keep all at-rules, use the value `true`
+- To discard all at-rules, use an empty array `[]`
 
 ## Todo
 
