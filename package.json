@@ -21,9 +21,9 @@
     "postcss": "^5.2.6"
   },
   "devDependencies": {
-    "jest": "^17.0.2",
-    "eslint": "^3.10.2",
-    "eslint-config-postcss": "^2.0.2"
+    "eslint": "^3.19.0",
+    "eslint-config-postcss": "^2.0.2",
+    "jest": "^17.0.2"
   },
   "scripts": {
     "test": "jest && eslint *.js"
