@@ -2,6 +2,7 @@
 'use strict';
 
 const postcss = require('postcss');
+const splitSelectors = require('./split-selectors');
 const plugin = require('./');
 
 function run(input, output, options) {
@@ -135,7 +136,6 @@ describe('at-rules', () => {
 });
 
 describe('filter', () => {
-
     it('removes all classes', () => {
         let input = '#a {} .b {} .c {} #d {}',
             output = '#a {} #d {}';
@@ -216,4 +216,108 @@ describe('filter', () => {
             }
         });
     });
+});
+
+describe('parts selector', () => {
+    const TESTS = {
+        '*':                          true,
+        '#a':                         true,
+        '#a:not(.b)':                 true,
+        '#a:not(  .b:not(.c  ))':     ['#a:not(.b:not(.c))'],
+        '#a:matches(.b,   .c)':       ['#a:matches(.b,.c)'],
+        '#a:matches(.b:not(.c), .d)': ['#a:matches(.b:not(.c),.d)'],
+        '#a:has(.b, .c)':             ['#a:has(.b,.c)'],
+        '#a.b':                       true,
+        '#a.b .c.d':                  ['#a.b', '.c.d'],
+        '#a[foo]':                    true,
+        '#a[foo="bar"]':              true,
+        '#a[foo="space test"]':       true,
+        '#a[foo="bar" i]':            true,
+        '#a[foo="space test" i]':     true,
+        '#a[foo~="bar"]':             true,
+        '#a[foo~="space test"]':      true,
+        '#a[foo^="bar"]':             true,
+        '#a[foo^="space test"]':      true,
+        '#a[foo$="bar"]':             true,
+        '#a[foo$="space test"]':      true,
+        '#a[foo*="bar"]':             true,
+        '#a[foo*="space test"]':      true,
+        '#a[foo|="fruit"]':           true,
+        '#a[foo|="space test"]':      true,
+        '#a:dir(ltr)':                true,
+        '#a:lang(zh)':                true,
+        '#a:any-link':                true,
+        '#a:link':                    true,
+        '#a:visited':                 true,
+        '#a:target':                  true,
+        '#a:scope':                   true,
+        '#a:current':                 true,
+        '#a:current(.b)':             true,
+        '#a:past':                    true,
+        '#a:future':                  true,
+        '#a:active':                  true,
+        '#a:hover':                   true,
+        '#a:focus':                   true,
+        '#a:drop':                    true,
+        '#a:drop(active)':            true,
+        '#a:drop(valid)':             true,
+        '#a:drop(invalid)':           true,
+        '#a:enabled':                 true,
+        '#a:disabled':                true,
+        '#a:read-write':              true,
+        '#a:read-only':               true,
+        '#a:placeholder-shown':       true,
+        '#a:default':                 true,
+        '#a:checked':                 true,
+        '#a:indeterminate':           true,
+        '#a:valid':                   true,
+        '#a:invalid':                 true,
+        '#a:in-range':                true,
+        '#a:out-of-range':            true,
+        '#a:required':                true,
+        '#a:optional':                true,
+        '#a:user-error':              true,
+        '#a:root':                    true,
+        '#a:empty':                   true,
+        '#a:blank':                   true,
+        '#a:nth-child(odd)':          true,
+        '#a:nth-child(even)':         true,
+        '#a:nth-child(2n+1)':         true,
+        '#a:nth-last-child(even)':    true,
+        '#a:first-child':             true,
+        '#a:last-child':              true,
+        '#a:only-child':              true,
+        '#a::after':                  true,
+        '#a::before':                 true,
+        '#a:nth-of-type(1)':          true,
+        '#a:nth-last-of-type(1)':     true,
+        '#a:first-of-type':           true,
+        '#a:last-of-type':            true,
+        '#a:only-of-type':            true,
+        '#a .b':                      ['#a', '.b'],
+        '#a div video':               ['#a', 'div', 'video'],
+        '#a >> .b':                   ['#a', '.b'],
+        '#a>>.b':                     ['#a', '.b'],
+        '#a > .b':                    ['#a', '.b'],
+        '#a>.b':                      ['#a', '.b'],
+        '#a + .b':                    ['#a', '.b'],
+        '#a.b.c + .d .e':             ['#a.b.c', '.d', '.e'],
+        '#a+.b':                      ['#a', '.b'],
+        '#a ~ .b':                    ['#a', '.b'],
+        '#a~.b':                      ['#a', '.b'],
+        '.b || #a':                   ['.b', '#a'],
+        '.b||#a':                     ['.b', '#a'],
+        '#a:nth-column(3)':           true,
+        '#a:nth-last-column(3)':      true,
+        '#a:playing':                 true,
+        '#a:paused':                  true
+    };
+
+    for (let input in TESTS) {
+        it('splits: ' + input, () => {
+            let output = TESTS[input],
+                result = splitSelectors(input);
+            expect(result).toEqual(output === true ? [input] : output);
+        });
+    }
 });

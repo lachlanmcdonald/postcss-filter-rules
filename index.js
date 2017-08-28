@@ -2,13 +2,13 @@
 /* jshint esversion: 6 */
 'use strict';
 
-let postcss = require('postcss');
+const postcss = require('postcss');
+const splitSelectors = require('./split-selectors');
 
 module.exports = postcss.plugin('postcss-filter-rules', (options) => {
     options = options || {};
 
-    let cssSeparator = /\s+|\s*[~+>]\s*/,
-        defaultSafeAtRules = ['charset', 'import', 'keyframes'],
+    let defaultSafeAtRules = ['charset', 'import', 'keyframes'],
         removeAtRules = ['font-face', 'charset', 'import', 'keyframes'];
 
     options.filter = options.filter || (() => {
@@ -22,7 +22,7 @@ module.exports = postcss.plugin('postcss-filter-rules', (options) => {
     return (root) => {
         root.walkRules((rule) => {
             let selectors = rule.selectors.slice().filter((selector) => {
-                return options.filter(selector, selector.split(cssSeparator));
+                return options.filter(selector, splitSelectors(selector));
             });
 
             if (selectors.length === 0) {
