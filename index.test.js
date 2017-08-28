@@ -1,4 +1,5 @@
 /* jshint esversion: 6 */
+'use strict';
 
 const postcss = require('postcss');
 const plugin = require('./');
@@ -27,8 +28,6 @@ sampleFontFace = `@font-face {
 
 describe('defaults', () => {
     it('does what the readme says', () => {
-        'use strict';
-
         let input = `.styleguide span,
     .button span {
         color: red;
@@ -47,15 +46,11 @@ describe('defaults', () => {
     });
 
     it('does nothing by default', () => {
-        'use strict';
-
         let input = 'a {}';
         return run(input, input, {});
     });
 
     it('keeps rules when filter returns true', () => {
-        'use strict';
-
         let input = 'a {}';
         return run(input, input, {
             filter: function () {
@@ -65,8 +60,6 @@ describe('defaults', () => {
     });
 
     it('removes rules when filter returns false', () => {
-        'use strict';
-
         return run('a {} .b {} #c {}', '', {
             filter: () => {
                 return false;
@@ -77,13 +70,10 @@ describe('defaults', () => {
 
 describe('@media', () => {
     it('removes empty @media', () => {
-        'use strict';
         return run('@media () {}', '', {});
     });
 
     it('does not remove @media', () => {
-        'use strict';
-
         let input = '@media screen {.b {}} .b {} .c {}',
             output = '@media screen {.b {}} .b {}';
         return run(input, output, {
@@ -94,8 +84,6 @@ describe('@media', () => {
     });
 
     it('keeps @media when removing rules', () => {
-        'use strict';
-
         let input = '@media screen {.b {}} @media screen {.c {}}',
             output = '@media screen {.b {}}';
         return run(input, output, {
@@ -106,8 +94,6 @@ describe('@media', () => {
     });
 
     it('keeps @media when removing rules with multiple selectors', () => {
-        'use strict';
-
         let input = '@media screen {.b strong {}} @media screen {.c {}}',
             output = '@media screen {.b strong {}}';
         return run(input, output, {
@@ -120,35 +106,27 @@ describe('@media', () => {
 
 describe('at-rules', () => {
     it('keeps @charset by default', () => {
-        'use strict';
         return run(sampleCharset, sampleCharset, {});
     });
 
     it('keeps @import by default', () => {
-        'use strict';
         return run(sampleImport, sampleImport, {});
     });
 
     it('keeps @keyframes by default', () => {
-        'use strict';
         return run(sampleKeyframes, sampleKeyframes, {});
     });
 
     it('removes @font-face by default', () => {
-        'use strict';
         return run(sampleFontFace, '', {});
     });
 
     it('removes empty at-rules', () => {
-        'use strict';
-
         let input = '@font-face {} @media {} @page {}';
         return run(input, '', {});
     });
 
     it('removes all at-rules when keepAtRules is an empty array', () => {
-        'use strict';
-
         let input = [sampleCharset, sampleImport, sampleKeyframes].join('\n');
         return run(input, '', {
             keepAtRules: []
@@ -159,8 +137,6 @@ describe('at-rules', () => {
 describe('filter', () => {
 
     it('removes all classes', () => {
-        'use strict';
-
         let input = '#a {} .b {} .c {} #d {}',
             output = '#a {} #d {}';
 
@@ -172,8 +148,6 @@ describe('filter', () => {
     });
 
     it('removes a specific class', () => {
-        'use strict';
-
         let input = '#main .a strong {} #main .c strong {}',
             output = '#main .a strong {}';
         return run(input, output, {
@@ -184,8 +158,6 @@ describe('filter', () => {
     });
 
     it('removes a selector starting with an ID', () => {
-        'use strict';
-
         let input = '#main {} .c {}',
             output = '.c {}';
         return run(input, output, {
@@ -196,8 +168,6 @@ describe('filter', () => {
     });
 
     it('removes a selector starting with an ID and whitespace', () => {
-        'use strict';
-
         let input = '   #main {}    .c {}',
             output = '   .c {}';
         return run(input, output, {
@@ -208,8 +178,6 @@ describe('filter', () => {
     });
 
     it('removes a single selector', () => {
-        'use strict';
-
         let input = '.a, .b, .c {}',
             output = '.b, .c {}';
         return run(input, output, {
@@ -220,8 +188,6 @@ describe('filter', () => {
     });
 
     it('removes multiple selectors', () => {
-        'use strict';
-
         let input = '.a, .b, .c {}',
             output = '.a {}';
         return run(input, output, {
@@ -232,8 +198,6 @@ describe('filter', () => {
     });
 
     it('removes adjacent sibling selectors', () => {
-        'use strict';
-
         let input = '.a, .b + .c {} .b+.c {}',
             output = '.a {}';
         return run(input, output, {
@@ -244,8 +208,6 @@ describe('filter', () => {
     });
 
     it('removes direct sibling selectors', () => {
-        'use strict';
-
         let input = '.a, .b ~ .c {} .b~.c {}',
             output = '.a {}';
         return run(input, output, {
