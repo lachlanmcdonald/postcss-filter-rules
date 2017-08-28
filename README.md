@@ -100,7 +100,6 @@ By default, `@font-face` and any empty [at-rules] (after filtering) are removed.
 
 ## Todo
 
-- Write tests for the `parts` argument (`cssSeparator` variable in `index.js`)
 - Keep a `@keyframes` rule when it is referenced by `animation-name` or the `animation` shorthand.
 - Keep a `@font-face` rule when it is referenced by `font-family` or the `font` shorthand.
 
