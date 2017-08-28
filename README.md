@@ -89,7 +89,7 @@ Default: `['charset', 'import', 'keyframes']`
 
 By default, `@font-face` and any empty [at-rules] (no child rules after filtering) are removed. To keep specific at-rules, provide an array of names to this option. For example:
 
-```js
+```json
 {
 	keepAtRules: ['font-face', 'import']
 }
