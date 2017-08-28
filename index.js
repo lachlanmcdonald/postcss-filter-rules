@@ -15,7 +15,7 @@ module.exports = postcss.plugin('postcss-filter-rules', (options) => {
         return true;
     });
 
-    if (Array.isArray(options.keepAtRules) === false) {
+    if (options.keepAtRules !== true && Array.isArray(options.keepAtRules) === false) {
         options.keepAtRules = defaultSafeAtRules;
     }
 
