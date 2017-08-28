@@ -133,6 +133,14 @@ describe('at-rules', () => {
             keepAtRules: []
         });
     });
+
+    it('keeps all at-rules when keepAtRules is true', () => {
+        let input = [sampleCharset, sampleImport, sampleFontFace, sampleKeyframes].join('\n');
+
+        return run(input, input, {
+            keepAtRules: true
+        });
+    });
 });
 
 describe('filter', () => {

@@ -32,15 +32,17 @@ module.exports = postcss.plugin('postcss-filter-rules', (options) => {
             }
         });
 
-        root.walkAtRules((rule) => {
-            if (options.keepAtRules.indexOf(rule.name) === -1) {
-                let isEmpty = Array.isArray(rule.nodes) && rule.nodes.length === 0,
-                    removeByDefault = removeAtRules.indexOf(rule.name) >= 0;
+        if (options.keepAtRules !== true) {
+            root.walkAtRules((rule) => {
+                if (options.keepAtRules.indexOf(rule.name) === -1) {
+                    let isEmpty = Array.isArray(rule.nodes) && rule.nodes.length === 0,
+                        removeByDefault = removeAtRules.indexOf(rule.name) >= 0;
 
-                if (isEmpty || removeByDefault) {
-                    rule.parent.removeChild(rule);
+                    if (isEmpty || removeByDefault) {
+                        rule.parent.removeChild(rule);
+                    }
                 }
-            }
-        });
+            });
+        }
     };
 });
