@@ -1,6 +1,9 @@
 # PostCSS Filter Rules
 
-[![npm version][npm-img]][npm] [![Build Status][ci-img]][ci]
+
+[![npm version](https://badge.fury.io/js/postcss-filter-rules.svg)](https://badge.fury.io/js/postcss-filter-rules)
+[![License](https://img.shields.io/npm/l/postcss-filter-rules.svg)](https://github.com/lachlanmcdonald/postcss-filter-rules/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/lachlanmcdonald/postcss-filter-rules.svg?branch=master)](https://travis-ci.org/lachlanmcdonald/postcss-filter-rules)
 
 [PostCSS] plugin that filters rules with a callback function on each selector. Can be used to filter out individual rules or remove all rules besides those you wish to keep.
 
@@ -9,7 +12,6 @@
 ```shell
 npm install postcss-filter-selectors --save-dev
 ```
-
 
 ## Usage
 
@@ -103,15 +105,7 @@ By default, `@font-face` and any empty [at-rules] (after filtering) are removed.
 - Keep a `@keyframes` rule when it is referenced by `animation-name` or the `animation` shorthand.
 - Keep a `@font-face` rule when it is referenced by `font-family` or the `font` shorthand.
 
-## License
-
-Licensed under the BSD 3-Clause License.
-
 [grunt-postcss]: https://github.com/nDmitry/grunt-postcss
 [PostCSS]:       https://github.com/postcss/postcss
-[npm-img]:       https://badge.fury.io/js/postcss-filter-rules.svg
-[npm]:           https://badge.fury.io/js/postcss-filter-rules
-[ci-img]:        https://travis-ci.org/lachlanmcdonald/postcss-filter-rules.svg
-[ci]:            https://travis-ci.org/lachlanmcdonald/postcss-filter-rules
 [at-rule]:       https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule
 [at-rules]:      https://developer.mozilla.org/en-US/docs/Web/CSS/At-rule
