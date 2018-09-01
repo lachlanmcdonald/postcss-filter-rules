@@ -1,6 +1,14 @@
+os:
+  - osx
 language: node_js
-cache: yarn
 node_js:
-  - stable
+  - "10"
+  - "9"
+  - "8"
+  - "7"
   - "6"
-  - "4"
+  - "node"
+  - "lts/*"
+cache:
+  directories:
+    - node_modules
