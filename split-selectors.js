@@ -1,5 +1,3 @@
-/* eslint max-len: 0 */
-/* jshint esversion: 6 */
 'use strict';
 
 const parser = require('postcss-selector-parser');
