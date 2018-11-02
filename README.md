@@ -1,6 +1,5 @@
 # PostCSS Filter Rules
 
-
 [![npm version](https://badge.fury.io/js/postcss-filter-rules.svg)](https://badge.fury.io/js/postcss-filter-rules)
 [![License](https://img.shields.io/npm/l/postcss-filter-rules.svg)](https://github.com/lachlanmcdonald/postcss-filter-rules/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/lachlanmcdonald/postcss-filter-rules.svg?branch=master)](https://travis-ci.org/lachlanmcdonald/postcss-filter-rules)
@@ -10,7 +9,7 @@
 ## Installation
 
 ```shell
-npm install postcss-filter-selectors --save-dev
+npm install postcss-filter-rules --save-dev
 ```
 
 ## Usage
