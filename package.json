@@ -19,7 +19,7 @@
   "homepage": "https://github.com/lachlanmcdonald/postcss-filter-rules",
   "dependencies": {
     "postcss": "^5.2.18",
-    "postcss-selector-parser": "^2.2.3"
+    "postcss-selector-parser": "^4.0.0"
   },
   "devDependencies": {
     "eslint": "^3.19.0",

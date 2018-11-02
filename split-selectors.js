@@ -1,25 +1,23 @@
-'use strict';
-
 const parser = require('postcss-selector-parser');
-const processor = parser();
+const processor = parser((root) => {
+  root.walkComments(x => x.remove());
+});
 
 module.exports = (selector) => {
-    let temp = [],
-        result;
-
-    result = processor.process(selector, {
+    const result = [];
+    const astResult = processor.astSync(selector, {
         lossless: false
     });
 
     let combineWithLast = false;
-    result.res.nodes[0].nodes.forEach((x) => {
+    astResult.nodes[0].nodes.forEach((x) => {
         let xs = x.toString();
 
         if (x.type !== 'combinator') {
             if (combineWithLast) {
-                temp[temp.length - 1] += xs;
+                result[result.length - 1] += xs;
             } else {
-                temp.push(xs);
+                result.push(xs);
             }
             combineWithLast = true;
         } else {
@@ -27,7 +25,5 @@ module.exports = (selector) => {
         }
     });
 
-    return temp.map((x) => {
-        return x.trim();
-    });
+    return result;
 };
