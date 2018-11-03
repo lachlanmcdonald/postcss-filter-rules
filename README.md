@@ -15,7 +15,9 @@ npm install postcss-filter-rules --save-dev
 ## Usage
 
 ```js
-postcss([ require('postcss-filter-rules') ])
+postcss([
+    require('postcss-filter-rules')
+])
 ```
 
 Or with [grunt-postcss]:
@@ -52,14 +54,14 @@ The function receives two arguments, `selector` and `parts`:
 
 - **selector** (String): The selector, as authored in CSS
 - **parts** (Array): An array of elements, classes, IDs and pseudo-classes in the selector. Can be used to quickly search for the existence of classes or IDs.  
-i.e. for the selector `.a + strong.b`, the argument will contain: `[".a", "strong.b"]`
+i.e. for the selector `.a + strong.b`, the argument will be: `[".a", "strong.b"]`
 
-For example, to keep only the `.styleguide` class:
+For example, to keep only the selectors with the `.styleguide` class:
 
 ```js
 {
-	filter: function(selector, parts) {
-		return parts.indexOf('.styleguide') > -1;
+	filter: (selector, parts) => {
+		return parts.includes('.styleguide');
 	}
 }
 ```
