@@ -16,25 +16,8 @@ npm install postcss-filter-rules --save-dev
 
 ```js
 postcss([
-    require('postcss-filter-rules')
+    require('postcss-filter-rules')(options)
 ])
-```
-
-Or with [grunt-postcss]:
-
-```js
-grunt.initConfig({
-	postcss: {
-		options: {
-			processors: [
-				require('postcss-filter-rules')(options)
-			]
-		},
-		dist: {
-			src: 'css/*.css'
-		}
-	}
-});
 ```
 
 See [PostCSS] docs for examples for your environment.
