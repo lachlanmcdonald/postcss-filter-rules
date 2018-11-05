@@ -88,6 +88,7 @@ By default, `@font-face` and any empty [at-rules] (after filtering) are removed.
 
 - Keep a `@keyframes` rule when it is referenced by `animation-name` or the `animation` shorthand.
 - Keep a `@font-face` rule when it is referenced by `font-family` or the `font` shorthand.
+- Allow custom callbacks for `charset`, `import`, and `keyframes` blocks.
 
 [grunt-postcss]: https://github.com/nDmitry/grunt-postcss
 [PostCSS]:       https://github.com/postcss/postcss
