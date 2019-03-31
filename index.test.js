@@ -4,12 +4,16 @@ const postcss = require('postcss');
 const splitSelectors = require('./split-selectors');
 const plugin = require('./');
 
-function run(input, output, options) {
-    return postcss([plugin(options)]).process(input).then(result => {
+const run = (input, output, options) => {
+    return postcss([
+      plugin(options)
+    ]).process(input, {
+      from: null
+    }).then(result => {
         expect(result.css).toEqual(output);
         expect(result.warnings().length).toBe(0);
     });
-}
+};
 
 var sampleCharset = '@charset "UTF-8";',
     sampleImport = '@import "/css/sample.css";',
@@ -53,7 +57,7 @@ describe('defaults', () => {
     it('keeps rules when filter returns true', () => {
         let input = 'a {}';
         return run(input, input, {
-            filter: function () {
+            filter: () => {
                 return true;
             }
         });
