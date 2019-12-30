@@ -1,6 +1,6 @@
 {
   "name": "postcss-filter-rules",
-  "version": "0.3.3",
+  "version": "0.3.2",
   "description": "PostCSS plugin to filter rules by applying a callback function on each selector. Can be used to filter out individual rules or remove all rules besides those you wish to keep.",
   "keywords": [
     "postcss",
@@ -18,27 +18,41 @@
   },
   "homepage": "https://github.com/lachlanmcdonald/postcss-filter-rules",
   "dependencies": {
-    "postcss": "^7.0.17",
+    "postcss": "^7.0.25",
     "postcss-selector-parser": "^6.0.2"
   },
   "devDependencies": {
-    "@lachlanmcdonald/eslint-config-eslint": "^0.1.3",
-    "eslint": "^6.0.1",
-    "jest": "^24.8.0"
+    "@logux/eslint-config": "^35.0.3",
+    "eslint": "^6.8.0",
+    "eslint-config-postcss": "^3.0.7",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-es5": "^1.4.1",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jest": "^23.2.0",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prefer-let": "^1.0.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "eslint-plugin-unicorn": "^15.0.1",
+    "jest": "^24.9.0"
   },
   "scripts": {
     "test": "jest",
     "lint": "eslint **/*.js",
-    "lint:fix": "eslint --fix **/*.js"
+    "lint:fix": "eslint **/*.js --fix"
   },
   "eslintConfig": {
-    "extends": "@lachlanmcdonald/eslint-config-eslint",
-    "env": {
-      "jest": true,
-      "node": true
-    },
-    "parserOptions": {
-      "ecmaVersion": 6
+    "extends": "eslint-config-postcss",
+    "rules": {
+      "max-len": 0,
+      "semi": 0,
+      "no-tabs": 0,
+      "import-helpers/order-imports": 0,
+      "indent": [
+        "error",
+        "tab"
+      ]
     }
   }
 }

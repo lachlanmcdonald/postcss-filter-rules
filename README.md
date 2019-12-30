@@ -43,9 +43,7 @@ For example, to keep only the selectors with the `.styleguide` class:
 
 ```js
 {
-	filter: (selector, parts) => {
-		return parts.includes('.styleguide');
-	}
+	filter: (selector, parts) => parts.includes('.styleguide')
 }
 ```
 
