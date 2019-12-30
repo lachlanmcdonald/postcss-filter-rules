@@ -1,6 +1,7 @@
 'use strict';
 
 const postcss = require('postcss');
+
 const splitSelectors = require('./split-selectors');
 const plugin = require('./');
 
@@ -44,7 +45,7 @@ describe('defaults', () => {
 	}`;
 		return run(input, output, {
 			filter: (selector, parts) => {
-				return parts.indexOf('.styleguide') > -1;
+				return parts.includes('.styleguide');
 			}
 		});
 	});
@@ -83,7 +84,7 @@ describe('@media', () => {
 
 		return run(input, output, {
 			filter: (selector, parts) => {
-				return parts.indexOf('.b') > -1;
+				return parts.includes('.b');
 			}
 		});
 	});
@@ -94,7 +95,7 @@ describe('@media', () => {
 
 		return run(input, output, {
 			filter: (selector, parts) => {
-				return parts.indexOf('.b') > -1;
+				return parts.includes('.b');
 			}
 		});
 	});
@@ -105,7 +106,7 @@ describe('@media', () => {
 
 		return run(input, output, {
 			filter: (selector, parts) => {
-				return parts.indexOf('.b') > -1;
+				return parts.includes('.b');
 			}
 		});
 	});
@@ -156,7 +157,7 @@ describe('filter', () => {
 
 		return run(input, output, {
 			filter: selector => {
-				return !/\.-?[_a-zA-Z]+[_a-zA-Z0-9-]*/.test(selector);
+				return !/\.-?[A-Z_a-z]+[\w-]*/.test(selector);
 			}
 		});
 	});
@@ -167,7 +168,7 @@ describe('filter', () => {
 
 		return run(input, output, {
 			filter: (selector, parts) => {
-				return parts.indexOf('.c') === -1;
+				return !parts.includes('.c');
 			}
 		});
 	});
@@ -200,7 +201,7 @@ describe('filter', () => {
 
 		return run(input, output, {
 			filter: (selector, parts) => {
-				return parts.indexOf('.a') === -1;
+				return !parts.includes('.a');
 			}
 		});
 	});
@@ -211,7 +212,7 @@ describe('filter', () => {
 
 		return run(input, output, {
 			filter: (selector, parts) => {
-				return parts.indexOf('.b') === -1 && parts.indexOf('.c') === -1;
+				return !parts.includes('.b') && !parts.includes('.c');
 			}
 		});
 	});
@@ -222,7 +223,7 @@ describe('filter', () => {
 
 		return run(input, output, {
 			filter: selector => {
-				return selector.indexOf('+') === -1;
+				return !selector.includes('+');
 			}
 		});
 	});
@@ -233,7 +234,7 @@ describe('filter', () => {
 
 		return run(input, output, {
 			filter: selector => {
-				return selector.indexOf('~') === -1;
+				return !selector.includes('~');
 			}
 		});
 	});

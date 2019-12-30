@@ -1,4 +1,5 @@
 const postcss = require('postcss');
+
 const splitSelectors = require('./split-selectors');
 
 const defaultSafeAtRules = ['charset', 'import', 'keyframes'];
@@ -30,9 +31,9 @@ module.exports = postcss.plugin('postcss-filter-rules', options => {
 
 		if (options.keepAtRules !== true) {
 			root.walkAtRules(rule => {
-				if (options.keepAtRules.indexOf(rule.name) === -1) {
+				if (!options.keepAtRules.includes(rule.name)) {
 					let isEmpty = Array.isArray(rule.nodes) && rule.nodes.length === 0;
-					let removeByDefault = removeAtRules.indexOf(rule.name) >= 0;
+					let removeByDefault = removeAtRules.includes(rule.name);
 
 					if (isEmpty || removeByDefault) {
 						rule.parent.removeChild(rule);
