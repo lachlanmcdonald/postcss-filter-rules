@@ -18,24 +18,24 @@
   },
   "homepage": "https://github.com/lachlanmcdonald/postcss-filter-rules",
   "dependencies": {
-    "postcss": "^7.0.25",
+    "postcss": "^7.0.27",
     "postcss-selector-parser": "^6.0.2"
   },
   "devDependencies": {
-    "@logux/eslint-config": "^35.0.3",
+    "@logux/eslint-config": "^36.1.1",
     "eslint": "^6.8.0",
-    "eslint-config-postcss": "^3.0.7",
+    "eslint-config-postcss": "^4.0.0",
     "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-es5": "^1.4.1",
-    "eslint-plugin-import": "^2.19.1",
-    "eslint-plugin-jest": "^23.2.0",
+    "eslint-plugin-es5": "^1.5.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jest": "^23.8.2",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-prefer-let": "^1.0.1",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-security": "^1.4.0",
     "eslint-plugin-standard": "^4.0.1",
-    "eslint-plugin-unicorn": "^15.0.1",
-    "jest": "^24.9.0"
+    "eslint-plugin-unicorn": "^17.2.0",
+    "jest": "^25.1.0"
   },
   "scripts": {
     "test": "jest",
