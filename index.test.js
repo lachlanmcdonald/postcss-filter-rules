@@ -2,7 +2,7 @@
 
 const postcss = require('postcss');
 
-const splitSelectors = require('./split-selectors');
+const splitSelectors = require('./splitSelectors');
 const plugin = require('./');
 
 function run (input, output, options) {

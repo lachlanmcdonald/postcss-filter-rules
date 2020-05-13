@@ -1,6 +1,6 @@
 const postcss = require('postcss');
 
-const splitSelectors = require('./split-selectors');
+const splitSelectors = require('./splitSelectors');
 
 const defaultSafeAtRules = ['charset', 'import', 'keyframes'];
 const removeAtRules = ['font-face', 'charset', 'import', 'keyframes'];
