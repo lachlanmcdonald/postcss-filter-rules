@@ -5,16 +5,16 @@ const processor = parser(root => {
 });
 
 module.exports = selector => {
-	let result = [];
-	let astResult = processor.astSync(selector, {
+	const result = [];
+	const astResult = processor.astSync(selector, {
 		lossless: false
 	});
 
 	let combineWithLast = false;
 	astResult.nodes[0].nodes.forEach(x => {
-		let xs = x.toString();
-
 		if (x.type !== 'combinator') {
+			const xs = x.toString();
+
 			if (combineWithLast) {
 				result[result.length - 1] += xs;
 			} else {
