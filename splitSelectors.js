@@ -1,4 +1,5 @@
 const parser = require('postcss-selector-parser');
+
 const processor = parser(root => {
 	root.walkComments(x => x.remove());
 });
@@ -11,9 +12,9 @@ module.exports = selector => {
 
 	let combineWithLast = false;
 	astResult.nodes[0].nodes.forEach(x => {
-		let xs = x.toString();
-
 		if (x.type !== 'combinator') {
+			let xs = x.toString();
+
 			if (combineWithLast) {
 				result[result.length - 1] += xs;
 			} else {
