@@ -154,7 +154,7 @@ describe('filter', () => {
 
 		return run(input, output, {
 			filter: selector => {
-				return !/\.-?[A-Z_a-z]+[\w-]*/.it(selector);
+				return !/\.-?[A-Z_a-z]+[\w-]*/.test(selector);
 			}
 		});
 	});
