@@ -12,7 +12,7 @@ module.exports = postcss.plugin('postcss-filter-rules', options => {
 		return true;
 	});
 
-	options.splitFunction = options.splitFunction || splitSelectors;
+	options.splitFunction = typeof options.splitFunction === 'function' ? options.splitFunction : splitSelectors;
 
 	if (options.keepAtRules !== true && Array.isArray(options.keepAtRules) === false) {
 		options.keepAtRules = DEFAULT_SAFE_AT_RULES;
@@ -21,9 +21,7 @@ module.exports = postcss.plugin('postcss-filter-rules', options => {
 	return root => {
 		root.walkRules(rule => {
 			let selectors = rule.selectors.slice().filter(selector => {
-				let parts = typeof options.splitFunction === 'function' ? options.splitFunction(selector) : null;
-
-				return options.filter(selector, parts);
+				return options.filter(selector, options.splitFunction(selector));
 			});
 
 			if (selectors.length === 0) {
