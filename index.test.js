@@ -30,7 +30,7 @@ sampleFontFace = `@font-face {
 }`;
 
 describe('defaults', () => {
-	it('does what the readme says', () => {
+	test('does what the readme says', () => {
 		let input = `.styleguide span,
 	.button span {
 		color: red;
@@ -48,12 +48,12 @@ describe('defaults', () => {
 		});
 	});
 
-	it('does nothing by default', () => {
+	test('does nothing by default', () => {
 		let input = 'a {}';
 		return run(input, input, {});
 	});
 
-	it('keeps rules when filter returns true', () => {
+	test('keeps rules when filter returns true', () => {
 		let input = 'a {}';
 		return run(input, input, {
 			filter: () => {
@@ -62,7 +62,7 @@ describe('defaults', () => {
 		});
 	});
 
-	it('removes rules when filter returns false', () => {
+	test('removes rules when filter returns false', () => {
 		return run('a {} .b {} #c {}', '', {
 			filter: () => {
 				return false;
@@ -72,11 +72,11 @@ describe('defaults', () => {
 });
 
 describe('@media', () => {
-	it('removes empty @media', () => {
+	test('removes empty @media', () => {
 		return run('@media () {}', '', {});
 	});
 
-	it('does not remove @media', () => {
+	test('does not remove @media', () => {
 		let input = '@media screen {.b {}} .b {} .c {}';
 		let output = '@media screen {.b {}} .b {}';
 
@@ -87,7 +87,7 @@ describe('@media', () => {
 		});
 	});
 
-	it('keeps @media when removing rules', () => {
+	test('keeps @media when removing rules', () => {
 		let input = '@media screen {.b {}} @media screen {.c {}}';
 		let output = '@media screen {.b {}}';
 
@@ -98,7 +98,7 @@ describe('@media', () => {
 		});
 	});
 
-	it('keeps @media when removing rules with multiple selectors', () => {
+	test('keeps @media when removing rules with multiple selectors', () => {
 		let input = '@media screen {.b strong {}} @media screen {.c {}}';
 		let output = '@media screen {.b strong {}}';
 
@@ -111,35 +111,35 @@ describe('@media', () => {
 });
 
 describe('at-rules', () => {
-	it('keeps @charset by default', () => {
+	test('keeps @charset by default', () => {
 		return run(sampleCharset, sampleCharset, {});
 	});
 
-	it('keeps @import by default', () => {
+	test('keeps @import by default', () => {
 		return run(sampleImport, sampleImport, {});
 	});
 
-	it('keeps @keyframes by default', () => {
+	test('keeps @keyframes by default', () => {
 		return run(sampleKeyframes, sampleKeyframes, {});
 	});
 
-	it('removes @font-face by default', () => {
+	test('removes @font-face by default', () => {
 		return run(sampleFontFace, '', {});
 	});
 
-	it('removes empty at-rules', () => {
+	test('removes empty at-rules', () => {
 		let input = '@font-face {} @media {} @page {}';
 		return run(input, '', {});
 	});
 
-	it('removes all at-rules when keepAtRules is an empty array', () => {
+	test('removes all at-rules when keepAtRules is an empty array', () => {
 		let input = [sampleCharset, sampleImport, sampleKeyframes].join('\n');
 		return run(input, '', {
 			keepAtRules: []
 		});
 	});
 
-	it('keeps all at-rules when keepAtRules is true', () => {
+	test('keeps all at-rules when keepAtRules is true', () => {
 		let input = [sampleCharset, sampleImport, sampleFontFace, sampleKeyframes].join('\n');
 
 		return run(input, input, {
@@ -149,7 +149,7 @@ describe('at-rules', () => {
 });
 
 describe('filter', () => {
-	it('removes all classes', () => {
+	test('removes all classes', () => {
 		let input = '#a {} .b {} .c {} #d {}';
 		let output = '#a {} #d {}';
 
@@ -160,7 +160,7 @@ describe('filter', () => {
 		});
 	});
 
-	it('removes a specific class', () => {
+	test('removes a specific class', () => {
 		let input = '#main .a strong {} #main .c strong {}';
 		let output = '#main .a strong {}';
 
@@ -171,7 +171,7 @@ describe('filter', () => {
 		});
 	});
 
-	it('removes a selector starting with an ID', () => {
+	test('removes a selector starting with an ID', () => {
 		let input = '#main {} .c {}';
 		let output = '.c {}';
 
@@ -182,7 +182,7 @@ describe('filter', () => {
 		});
 	});
 
-	it('removes a selector starting with an ID and whitespace', () => {
+	test('removes a selector starting with an ID and whitespace', () => {
 		let input = '   #main {}    .c {}';
 		let output = '   .c {}';
 
@@ -193,7 +193,7 @@ describe('filter', () => {
 		});
 	});
 
-	it('removes a single selector', () => {
+	test('removes a single selector', () => {
 		let input = '.a, .b, .c {}';
 		let output = '.b, .c {}';
 
@@ -204,7 +204,7 @@ describe('filter', () => {
 		});
 	});
 
-	it('removes multiple selectors', () => {
+	test('removes multiple selectors', () => {
 		let input = '.a, .b, .c {}';
 		let output = '.a {}';
 
@@ -215,7 +215,7 @@ describe('filter', () => {
 		});
 	});
 
-	it('removes adjacent sibling selectors', () => {
+	test('removes adjacent sibling selectors', () => {
 		let input = '.a, .b + .c {} .b+.c {}';
 		let output = '.a {}';
 
@@ -226,7 +226,7 @@ describe('filter', () => {
 		});
 	});
 
-	it('removes direct sibling selectors', () => {
+	test('removes direct sibling selectors', () => {
 		let input = '.a, .b ~ .c {} .b~.c {}';
 		let output = '.a {}';
 
@@ -239,102 +239,97 @@ describe('filter', () => {
 });
 
 describe('parts selector', () => {
-	let TESTS = {
-		'*': true,
-		'#a': true,
-		'#a:not(.b)': true,
-		'#a:not(  .b:not(.c  ))': ['#a:not(.b:not(.c))'],
-		'#a:matches(.b,   .c)': ['#a:matches(.b,.c)'],
-		'#a:matches(.b:not(.c), .d)': ['#a:matches(.b:not(.c),.d)'],
-		'#a:has(.b, .c)': ['#a:has(.b,.c)'],
-		'#a.b': true,
-		'#a.b .c.d': ['#a.b', '.c.d'],
-		'#a[foo]': true,
-		'#a[foo="bar"]': true,
-		'#a[foo="foo bar"]': true,
-		'#a[foo~="bar"]': true,
-		'#a[foo~="foo bar"]': true,
-		'#a[foo^="bar"]': true,
-		'#a[foo^="foo bar"]': true,
-		'#a[foo$="bar"]': true,
-		'#a[foo$="foo bar"]': true,
-		'#a[foo*="bar"]': true,
-		'#a[foo*="foo bar"]': true,
-		'#a[foo|="fruit"]': true,
-		'#a[foo|="foo bar"]': true,
-		'#a:dir(ltr)': true,
-		'#a:lang(zh)': true,
-		'#a:any-link': true,
-		'#a:link': true,
-		'#a:visited': true,
-		'#a:target': true,
-		'#a:scope': true,
-		'#a:current': true,
-		'#a:current(.b)': true,
-		'#a:past': true,
-		'#a:future': true,
-		'#a:active': true,
-		'#a:hover': true,
-		'#a:focus': true,
-		'#a:drop': true,
-		'#a:drop(active)': true,
-		'#a:drop(valid)': true,
-		'#a:drop(invalid)': true,
-		'#a:enabled': true,
-		'#a:disabled': true,
-		'#a:read-write': true,
-		'#a:read-only': true,
-		'#a:placeholder-shown': true,
-		'#a:default': true,
-		'#a:checked': true,
-		'#a:indeterminate': true,
-		'#a:valid': true,
-		'#a:invalid': true,
-		'#a:in-range': true,
-		'#a:out-of-range': true,
-		'#a:required': true,
-		'#a:optional': true,
-		'#a:user-error': true,
-		'#a:root': true,
-		'#a:empty': true,
-		'#a:blank': true,
-		'#a:nth-child(odd)': true,
-		'#a:nth-child(even)': true,
-		'#a:nth-child(2n+1)': true,
-		'#a:nth-last-child(even)': true,
-		'#a:first-child': true,
-		'#a:last-child': true,
-		'#a:only-child': true,
-		'#a::after': true,
-		'#a::before': true,
-		'#a:nth-of-type(1)': true,
-		'#a:nth-last-of-type(1)': true,
-		'#a:first-of-type': true,
-		'#a:last-of-type': true,
-		'#a:only-of-type': true,
-		'#a .b': ['#a', '.b'],
-		'#a div video': ['#a', 'div', 'video'],
-		'#a > .b': ['#a', '.b'],
-		'#a>.b': ['#a', '.b'],
-		'#a + .b': ['#a', '.b'],
-		'#a.b.c + .d .e': ['#a.b.c', '.d', '.e'],
-		'#a+.b': ['#a', '.b'],
-		'#a ~ .b': ['#a', '.b'],
-		'#a~.b': ['#a', '.b'],
-		'.b || #a': ['.b', '#a'],
-		'.b||#a': ['.b', '#a'],
-		'#a:nth-column(3)': true,
-		'#a:nth-last-column(3)': true,
-		'#a:playing': true,
-		'#a:paused': true
-	};
+	test.each([
+		['*', ['*']],
+		['#a', ['#a']],
+		['#a:not(.b)', ['#a:not(.b)']],
+		['#a:not(  .b:not(.c  ))', ['#a:not(.b:not(.c))']],
+		['#a:matches(.b,   .c)', ['#a:matches(.b,.c)']],
+		['#a:matches(.b:not(.c), .d)', ['#a:matches(.b:not(.c),.d)']],
+		['#a:has(.b, .c)', ['#a:has(.b,.c)']],
+		['#a.b', ['#a.b']],
+		['#a.b .c.d', ['#a.b', '.c.d']],
+		['#a[foo]', ['#a[foo]']],
+		['#a[foo="bar"]', ['#a[foo="bar"]']],
+		['#a[foo="foo bar"]', ['#a[foo="foo bar"]']],
+		['#a[foo~="bar"]', ['#a[foo~="bar"]']],
+		['#a[foo~="foo bar"]', ['#a[foo~="foo bar"]']],
+		['#a[foo^="bar"]', ['#a[foo^="bar"]']],
+		['#a[foo^="foo bar"]', ['#a[foo^="foo bar"]']],
+		['#a[foo$="bar"]', ['#a[foo$="bar"]']],
+		['#a[foo$="foo bar"]', ['#a[foo$="foo bar"]']],
+		['#a[foo*="bar"]', ['#a[foo*="bar"]']],
+		['#a[foo*="foo bar"]', ['#a[foo*="foo bar"]']],
+		['#a[foo|="fruit"]', ['#a[foo|="fruit"]']],
+		['#a[foo|="foo bar"]', ['#a[foo|="foo bar"]']],
+		['#a:dir(ltr)', ['#a:dir(ltr)']],
+		['#a:lang(zh)', ['#a:lang(zh)']],
+		['#a:any-link', ['#a:any-link']],
+		['#a:link', ['#a:link']],
+		['#a:visited', ['#a:visited']],
+		['#a:target', ['#a:target']],
+		['#a:scope', ['#a:scope']],
+		['#a:current', ['#a:current']],
+		['#a:current(.b)', ['#a:current(.b)']],
+		['#a:past', ['#a:past']],
+		['#a:future', ['#a:future']],
+		['#a:active', ['#a:active']],
+		['#a:hover', ['#a:hover']],
+		['#a:focus', ['#a:focus']],
+		['#a:drop', ['#a:drop']],
+		['#a:drop(active)', ['#a:drop(active)']],
+		['#a:drop(valid)', ['#a:drop(valid)']],
+		['#a:drop(invalid)', ['#a:drop(invalid)']],
+		['#a:enabled', ['#a:enabled']],
+		['#a:disabled', ['#a:disabled']],
+		['#a:read-write', ['#a:read-write']],
+		['#a:read-only', ['#a:read-only']],
+		['#a:placeholder-shown', ['#a:placeholder-shown']],
+		['#a:default', ['#a:default']],
+		['#a:checked', ['#a:checked']],
+		['#a:indeterminate', ['#a:indeterminate']],
+		['#a:valid', ['#a:valid']],
+		['#a:invalid', ['#a:invalid']],
+		['#a:in-range', ['#a:in-range']],
+		['#a:out-of-range', ['#a:out-of-range']],
+		['#a:required', ['#a:required']],
+		['#a:optional', ['#a:optional']],
+		['#a:user-error', ['#a:user-error']],
+		['#a:root', ['#a:root']],
+		['#a:empty', ['#a:empty']],
+		['#a:blank', ['#a:blank']],
+		['#a:nth-child(odd)', ['#a:nth-child(odd)']],
+		['#a:nth-child(even)', ['#a:nth-child(even)']],
+		['#a:nth-child(2n+1)', ['#a:nth-child(2n+1)']],
+		['#a:nth-last-child(even)', ['#a:nth-last-child(even)']],
+		['#a:first-child', ['#a:first-child']],
+		['#a:last-child', ['#a:last-child']],
+		['#a:only-child', ['#a:only-child']],
+		['#a::after', ['#a::after']],
+		['#a::before', ['#a::before']],
+		['#a:nth-of-type(1)', ['#a:nth-of-type(1)']],
+		['#a:nth-last-of-type(1)', ['#a:nth-last-of-type(1)']],
+		['#a:first-of-type', ['#a:first-of-type']],
+		['#a:last-of-type', ['#a:last-of-type']],
+		['#a:only-of-type', ['#a:only-of-type']],
+		['#a .b', ['#a', '.b']],
+		['#a div video', ['#a', 'div', 'video']],
+		['#a > .b', ['#a', '.b']],
+		['#a>.b', ['#a', '.b']],
+		['#a + .b', ['#a', '.b']],
+		['#a.b.c + .d .e', ['#a.b.c', '.d', '.e']],
+		['#a+.b', ['#a', '.b']],
+		['#a ~ .b', ['#a', '.b']],
+		['#a~.b', ['#a', '.b']],
+		['.b || #a', ['.b', '#a']],
+		['.b||#a', ['.b', '#a']],
+		['#a:nth-column(3)', ['#a:nth-column(3)']],
+		['#a:nth-last-column(3)', ['#a:nth-last-column(3)']],
+		['#a:playing', ['#a:playing']],
+		['#a:paused', ['#a:paused']],
+	])('Splits: %s', (input, expected) => {
+		const result = splitSelectors(input);
 
-	for (let input in TESTS) {
-		it('splits: ' + input, () => {
-			let output = TESTS[input];
-			let result = splitSelectors(input);
-
-			expect(result).toEqual(output === true ? [input] : output);
-		});
-	}
+		expect(result).toEqual(expected === true ? [input] : expected);
+	});
 });

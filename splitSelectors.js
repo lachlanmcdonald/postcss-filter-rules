@@ -1,4 +1,5 @@
 const parser = require('postcss-selector-parser');
+
 const processor = parser(root => {
 	root.walkComments(x => x.remove());
 });
