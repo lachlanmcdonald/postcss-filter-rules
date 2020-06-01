@@ -1,4 +1,5 @@
 const postcss = require('postcss');
+
 const plugin = require('./');
 
 function run (input, output, options) {
@@ -28,7 +29,7 @@ sampleFontFace = `@font-face {
 }`;
 
 describe('defaults', () => {
-	test('does what the readme says', () => {
+	it('does what the readme says', () => {
 		let input = `.styleguide span,
 	.button span {
 		color: red;
@@ -46,12 +47,12 @@ describe('defaults', () => {
 		});
 	});
 
-	test('does nothing by default', () => {
+	it('does nothing by default', () => {
 		let input = 'a {}';
 		return run(input, input, {});
 	});
 
-	test('keeps rules when filter returns true', () => {
+	it('keeps rules when filter returns true', () => {
 		let input = 'a {}';
 		return run(input, input, {
 			filter: () => {
@@ -60,7 +61,7 @@ describe('defaults', () => {
 		});
 	});
 
-	test('removes rules when filter returns false', () => {
+	it('removes rules when filter returns false', () => {
 		return run('a {} .b {} #c {}', '', {
 			filter: () => {
 				return false;
@@ -70,11 +71,11 @@ describe('defaults', () => {
 });
 
 describe('@media', () => {
-	test('removes empty @media', () => {
+	it('removes empty @media', () => {
 		return run('@media () {}', '', {});
 	});
 
-	test('does not remove @media', () => {
+	it('does not remove @media', () => {
 		let input = '@media screen {.b {}} .b {} .c {}';
 		let output = '@media screen {.b {}} .b {}';
 
@@ -85,7 +86,7 @@ describe('@media', () => {
 		});
 	});
 
-	test('keeps @media when removing rules', () => {
+	it('keeps @media when removing rules', () => {
 		let input = '@media screen {.b {}} @media screen {.c {}}';
 		let output = '@media screen {.b {}}';
 
@@ -96,7 +97,7 @@ describe('@media', () => {
 		});
 	});
 
-	test('keeps @media when removing rules with multiple selectors', () => {
+	it('keeps @media when removing rules with multiple selectors', () => {
 		let input = '@media screen {.b strong {}} @media screen {.c {}}';
 		let output = '@media screen {.b strong {}}';
 
@@ -109,35 +110,35 @@ describe('@media', () => {
 });
 
 describe('at-rules', () => {
-	test('keeps @charset by default', () => {
+	it('keeps @charset by default', () => {
 		return run(sampleCharset, sampleCharset, {});
 	});
 
-	test('keeps @import by default', () => {
+	it('keeps @import by default', () => {
 		return run(sampleImport, sampleImport, {});
 	});
 
-	test('keeps @keyframes by default', () => {
+	it('keeps @keyframes by default', () => {
 		return run(sampleKeyframes, sampleKeyframes, {});
 	});
 
-	test('removes @font-face by default', () => {
+	it('removes @font-face by default', () => {
 		return run(sampleFontFace, '', {});
 	});
 
-	test('removes empty at-rules', () => {
+	it('removes empty at-rules', () => {
 		let input = '@font-face {} @media {} @page {}';
 		return run(input, '', {});
 	});
 
-	test('removes all at-rules when keepAtRules is an empty array', () => {
+	it('removes all at-rules when keepAtRules is an empty array', () => {
 		let input = [sampleCharset, sampleImport, sampleKeyframes].join('\n');
 		return run(input, '', {
 			keepAtRules: []
 		});
 	});
 
-	test('keeps all at-rules when keepAtRules is true', () => {
+	it('keeps all at-rules when keepAtRules is true', () => {
 		let input = [sampleCharset, sampleImport, sampleFontFace, sampleKeyframes].join('\n');
 
 		return run(input, input, {
@@ -147,18 +148,18 @@ describe('at-rules', () => {
 });
 
 describe('filter', () => {
-	test('removes all classes', () => {
+	it('removes all classes', () => {
 		let input = '#a {} .b {} .c {} #d {}';
 		let output = '#a {} #d {}';
 
 		return run(input, output, {
 			filter: selector => {
-				return !/\.-?[A-Z_a-z]+[\w-]*/.test(selector);
+				return !/\.-?[A-Z_a-z]+[\w-]*/.it(selector);
 			}
 		});
 	});
 
-	test('removes a specific class', () => {
+	it('removes a specific class', () => {
 		let input = '#main .a strong {} #main .c strong {}';
 		let output = '#main .a strong {}';
 
@@ -169,7 +170,7 @@ describe('filter', () => {
 		});
 	});
 
-	test('removes a selector starting with an ID', () => {
+	it('removes a selector starting with an ID', () => {
 		let input = '#main {} .c {}';
 		let output = '.c {}';
 
@@ -180,7 +181,7 @@ describe('filter', () => {
 		});
 	});
 
-	test('removes a selector starting with an ID and whitespace', () => {
+	it('removes a selector starting with an ID and whitespace', () => {
 		let input = '   #main {}    .c {}';
 		let output = '   .c {}';
 
@@ -191,7 +192,7 @@ describe('filter', () => {
 		});
 	});
 
-	test('removes a single selector', () => {
+	it('removes a single selector', () => {
 		let input = '.a, .b, .c {}';
 		let output = '.b, .c {}';
 
@@ -202,7 +203,7 @@ describe('filter', () => {
 		});
 	});
 
-	test('removes multiple selectors', () => {
+	it('removes multiple selectors', () => {
 		let input = '.a, .b, .c {}';
 		let output = '.a {}';
 
@@ -213,7 +214,7 @@ describe('filter', () => {
 		});
 	});
 
-	test('removes adjacent sibling selectors', () => {
+	it('removes adjacent sibling selectors', () => {
 		let input = '.a, .b + .c {} .b+.c {}';
 		let output = '.a {}';
 
@@ -224,7 +225,7 @@ describe('filter', () => {
 		});
 	});
 
-	test('removes direct sibling selectors', () => {
+	it('removes direct sibling selectors', () => {
 		let input = '.a, .b ~ .c {} .b~.c {}';
 		let output = '.a {}';
 
