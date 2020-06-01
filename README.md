@@ -67,6 +67,11 @@ Will output:
 }
 ```
 
+**splitFunction**  
+Type: `Function`
+
+A custom callback that can be used to generate the `parts` argument of the callback. If one is not provided, the [default callback](https://github.com/lachlanmcdonald/postcss-filter-rules/blob/master/splitSelectors.js) is used. This callback builds an AST-tree using [`postcss-selector-parser`](https://www.npmjs.com/package/postcss-selector-parser), but there is no restriction on what this function can return.
+
 **keepAtRules**  
 Type: `Array` (Optional)  
 Default: `['charset', 'import', 'keyframes']`
