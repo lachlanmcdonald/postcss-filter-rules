@@ -1,8 +1,9 @@
 const postcss = require('postcss');
 
+const splitAllSelectors = require('./splitAllSelectors');
 const plugin = require('./');
 
-function run (input, output, options) {
+const run = (input, output, options) => {
 	return postcss([
 		plugin(options)
 	]).process(input, {
@@ -232,6 +233,20 @@ describe('filter', () => {
 		return run(input, output, {
 			filter: selector => {
 				return !selector.includes('~');
+			}
+		});
+	});
+});
+
+describe('options', () => {
+	it('allows overriding the splitFunction callback', () => {
+		let input = '.a[foo="bar"], .c {}';
+		let output = '.c {}';
+
+		return run(input, output, {
+			splitFunction: splitAllSelectors,
+			filter: (selector, parts) => {
+				return !parts.includes('[foo="bar"]');
 			}
 		});
 	});
