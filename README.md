@@ -4,7 +4,10 @@
 
 [PostCSS] plugin that filters rules with a callback function on each selector. Can be used to filter out individual rules or remove all rules besides those you wish to keep.
 
+
 ## Installation
+
+This plugin supports PostCSS 8 as of version `0.7.0`. If you use older versions of PostCSS, please use version `0.6.x` of this package.
 
 ```shell
 npm install --save-dev postcss postcss-filter-rules
@@ -84,12 +87,6 @@ By default, `@font-face` and any empty [at-rules] (after filtering) are removed.
 
 - To keep all at-rules, use the value `true`
 - To discard all at-rules, use an empty array `[]`
-
-## Todo
-
-- Keep a `@keyframes` rule when it is referenced by `animation-name` or the `animation` shorthand.
-- Keep a `@font-face` rule when it is referenced by `font-family` or the `font` shorthand.
-- Allow custom callbacks for `charset`, `import`, and `keyframes` blocks.
 
 [grunt-postcss]: https://github.com/nDmitry/grunt-postcss
 [PostCSS]:       https://github.com/postcss/postcss
