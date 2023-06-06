@@ -1,8 +1,6 @@
 # PostCSS Filter Rules
 
-[![npm version](https://badge.fury.io/js/postcss-filter-rules.svg)](https://badge.fury.io/js/postcss-filter-rules)
-[![License](https://img.shields.io/npm/l/postcss-filter-rules.svg)](https://github.com/lachlanmcdonald/postcss-filter-rules/blob/master/LICENSE)
-[![Build Status](https://travis-ci.org/lachlanmcdonald/postcss-filter-rules.svg?branch=master)](https://travis-ci.org/lachlanmcdonald/postcss-filter-rules)
+[![npm version](https://badge.fury.io/js/postcss-filter-rules.svg)](https://badge.fury.io/js/postcss-filter-rules) [![License](https://img.shields.io/npm/l/postcss-filter-rules.svg)](https://github.com/lachlanmcdonald/postcss-filter-rules/blob/master/LICENSE) [![Build](https://github.com/lachlanmcdonald/postcss-filter-rules/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/lachlanmcdonald/postcss-filter-rules/actions/)
 
 [PostCSS] plugin that filters rules with a callback function on each selector. Can be used to filter out individual rules or remove all rules besides those you wish to keep.
 
