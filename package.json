@@ -1,58 +1,35 @@
 {
-  "name": "postcss-filter-rules",
-  "version": "0.6.2",
-  "description": "PostCSS plugin to filter rules by applying a callback function on each selector. Can be used to filter out individual rules or remove all rules besides those you wish to keep.",
-  "keywords": [
-    "postcss",
-    "css",
-    "postcss-plugin",
-    "rules",
-    "selectors",
-    "filter"
-  ],
-  "author": "Lachlan McDonald <lachlan@radelaide.net>",
-  "license": "MIT",
-  "repository": "lachlanmcdonald/postcss-filter-rules",
-  "bugs": {
-    "url": "https://github.com/lachlanmcdonald/postcss-filter-rules/issues"
-  },
-  "homepage": "https://github.com/lachlanmcdonald/postcss-filter-rules",
-  "dependencies": {
-    "postcss": "^7.0.27",
-    "postcss-selector-parser": "^6.0.2"
-  },
-  "devDependencies": {
-    "@logux/eslint-config": "^36.1.1",
-    "eslint": "^6.8.0",
-    "eslint-config-postcss": "^4.0.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-es5": "^1.5.0",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-jest": "^23.8.2",
-    "eslint-plugin-node": "^11.0.0",
-    "eslint-plugin-prefer-let": "^1.0.1",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-security": "^1.4.0",
-    "eslint-plugin-standard": "^4.0.1",
-    "eslint-plugin-unicorn": "^17.2.0",
-    "jest": "^27.5.1"
-  },
-  "scripts": {
-    "test": "jest",
-    "lint": "eslint **/*.js",
-    "lint:fix": "eslint **/*.js --fix"
-  },
-  "eslintConfig": {
-    "extends": "eslint-config-postcss",
-    "rules": {
-      "max-len": 0,
-      "semi": 0,
-      "no-tabs": 0,
-      "import-helpers/order-imports": 0,
-      "indent": [
-        "error",
-        "tab"
-      ]
-    }
-  }
+	"name": "postcss-filter-rules",
+	"version": "0.6.2",
+	"description": "PostCSS plugin to filter rules by applying a callback function on each selector. Can be used to filter out individual rules or remove all rules besides those you wish to keep.",
+	"keywords": [
+		"postcss",
+		"css",
+		"postcss-plugin",
+		"rules",
+		"selectors",
+		"filter"
+	],
+	"author": "Lachlan McDonald <lachlan@radelaide.net>",
+	"license": "MIT",
+	"repository": "lachlanmcdonald/postcss-filter-rules",
+	"bugs": {
+		"url": "https://github.com/lachlanmcdonald/postcss-filter-rules/issues"
+	},
+	"homepage": "https://github.com/lachlanmcdonald/postcss-filter-rules",
+	"dependencies": {
+		"postcss": "^7.0.39",
+		"postcss-selector-parser": "^6.0.13"
+	},
+	"devDependencies": {
+		"eslint": "^8.42.0",
+		"eslint-config-postcss": "^4.0.0",
+		"eslint-plugin-jest": "^27.2.1",
+		"jest": "^29.5.0"
+	},
+	"scripts": {
+		"test": "jest",
+		"lint": "eslint **/*.js",
+		"lint:fix": "eslint **/*.js --fix"
+	}
 }

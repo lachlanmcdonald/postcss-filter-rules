@@ -12,6 +12,10 @@ insert_final_newline = true
 indent_size = 2
 indent_style = space
 
+[*.json]
+indent_size = 2
+indent_style = space
+
 [*.md]
 indent_style = space
 indent_size = 4

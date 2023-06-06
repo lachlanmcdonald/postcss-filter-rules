@@ -41,7 +41,7 @@ describe('defaults', () => {
 		color: red;
 	}`;
 		return run(input, output, {
-			filter: (selector, parts) => {
+			filter: (_selector, parts) => {
 				return parts.includes('.styleguide');
 			}
 		});
@@ -80,7 +80,7 @@ describe('@media', () => {
 		let output = '@media screen {.b {}} .b {}';
 
 		return run(input, output, {
-			filter: (selector, parts) => {
+			filter: (_selector, parts) => {
 				return parts.includes('.b');
 			}
 		});
@@ -91,7 +91,7 @@ describe('@media', () => {
 		let output = '@media screen {.b {}}';
 
 		return run(input, output, {
-			filter: (selector, parts) => {
+			filter: (_selector, parts) => {
 				return parts.includes('.b');
 			}
 		});
@@ -102,7 +102,7 @@ describe('@media', () => {
 		let output = '@media screen {.b strong {}}';
 
 		return run(input, output, {
-			filter: (selector, parts) => {
+			filter: (_selector, parts) => {
 				return parts.includes('.b');
 			}
 		});
@@ -164,7 +164,7 @@ describe('filter', () => {
 		let output = '#main .a strong {}';
 
 		return run(input, output, {
-			filter: (selector, parts) => {
+			filter: (_selector, parts) => {
 				return !parts.includes('.c');
 			}
 		});
@@ -197,7 +197,7 @@ describe('filter', () => {
 		let output = '.b, .c {}';
 
 		return run(input, output, {
-			filter: (selector, parts) => {
+			filter: (_selector, parts) => {
 				return !parts.includes('.a');
 			}
 		});
@@ -208,7 +208,7 @@ describe('filter', () => {
 		let output = '.a {}';
 
 		return run(input, output, {
-			filter: (selector, parts) => {
+			filter: (_selector, parts) => {
 				return !parts.includes('.b') && !parts.includes('.c');
 			}
 		});
