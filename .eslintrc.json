@@ -1,0 +1,19 @@
+{
+	"extends": "eslint-config-postcss",
+	"plugins": [
+		"jest"
+	],
+	"env": {
+		"jest/globals": true
+	},
+	"rules": {
+		"max-len": 0,
+		"semi": 0,
+		"no-tabs": 0,
+		"import-helpers/order-imports": 0,
+		"indent": [
+			"error",
+			"tab"
+		]
+	}
+}

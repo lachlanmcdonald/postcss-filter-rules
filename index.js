@@ -1,11 +1,9 @@
-const postcss = require('postcss');
-
 const splitSelectors = require('./splitSelectors');
 
 const DEFAULT_SAFE_AT_RULES = ['charset', 'import', 'keyframes'];
 const REMOVE_AT_RULES = ['font-face', 'charset', 'import', 'keyframes'];
 
-module.exports = postcss.plugin('postcss-filter-rules', options => {
+const plugin = (options) => {
 	options = options || {};
 
 	options.filter = options.filter || (() => {
@@ -44,4 +42,8 @@ module.exports = postcss.plugin('postcss-filter-rules', options => {
 			});
 		}
 	};
-});
+};
+
+plugin.postcss = true;
+
+module.exports = plugin;
