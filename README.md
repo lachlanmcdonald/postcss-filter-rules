@@ -7,7 +7,7 @@
 ## Installation
 
 ```shell
-npm install postcss-filter-rules --save-dev
+npm install --save-dev postcss postcss-filter-rules
 ```
 
 ## Usage
