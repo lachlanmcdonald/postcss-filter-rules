@@ -243,12 +243,11 @@ describe('options', () => {
 		let output = '.a {}';
 
 		return run(input, output, {
-			splitFunction: selector => selector,
 			filter: (selector, parts) => {
 				expect(parts).toBe(selector);
-
 				return true;
-			}
+			},
+			splitFunction: selector => selector
 		});
 	});
 });
