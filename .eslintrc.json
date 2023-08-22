@@ -1,19 +1,16 @@
 {
-	"extends": "eslint-config-postcss",
+	"root": true,
+	"extends": [
+		"@lmcd/eslint-config"
+	],
 	"plugins": [
 		"jest"
 	],
-	"env": {
-		"jest/globals": true
+	"parserOptions": {
+		"ecmaVersion": "latest"
 	},
-	"rules": {
-		"max-len": 0,
-		"semi": 0,
-		"no-tabs": 0,
-		"import-helpers/order-imports": 0,
-		"indent": [
-			"error",
-			"tab"
-		]
+	"env": {
+		"node": true,
+		"jest/globals": true
 	}
 }
