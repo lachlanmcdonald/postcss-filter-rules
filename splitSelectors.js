@@ -13,7 +13,9 @@ module.exports = selector => {
 	let combineWithLast = false;
 
 	astResult.nodes[0].nodes.forEach(x => {
-		if (x.type !== 'combinator') {
+		if (x.type === 'combinator') {
+			combineWithLast = false;
+		} else {
 			const xs = x.toString();
 
 			if (combineWithLast) {
@@ -22,8 +24,6 @@ module.exports = selector => {
 				result.push(xs);
 			}
 			combineWithLast = true;
-		} else {
-			combineWithLast = false;
 		}
 	});
 
