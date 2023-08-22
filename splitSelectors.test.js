@@ -88,7 +88,7 @@ describe('parts selector', () => {
 		['#a:nth-column(3)', ['#a:nth-column(3)']],
 		['#a:nth-last-column(3)', ['#a:nth-last-column(3)']],
 		['#a:playing', ['#a:playing']],
-		['#a:paused', ['#a:paused']]
+		['#a:paused', ['#a:paused']],
 	])('Splits: %s', (input, expected) => {
 		expect(splitSelectors(input)).toEqual(expected);
 	});

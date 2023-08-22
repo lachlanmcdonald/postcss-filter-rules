@@ -12,9 +12,9 @@ const plugin = (options = {}) => {
 	};
 
 	return {
-		Once(root, { result }) {
+		Once(root) {
 			root.walkRules(rule => {
-				let selectors = rule.selectors.slice().filter(selector => {
+				const selectors = rule.selectors.slice().filter(selector => {
 					return options.filter(selector, options.splitFunction(selector));
 				});
 
@@ -28,8 +28,8 @@ const plugin = (options = {}) => {
 			if (options.keepAtRules !== true) {
 				root.walkAtRules(rule => {
 					if (!options.keepAtRules.includes(rule.name)) {
-						let isEmpty = Array.isArray(rule.nodes) && rule.nodes.length === 0;
-						let removeByDefault = REMOVE_AT_RULES.includes(rule.name);
+						const isEmpty = Array.isArray(rule.nodes) && rule.nodes.length === 0;
+						const removeByDefault = REMOVE_AT_RULES.includes(rule.name);
 
 						if (isEmpty || removeByDefault) {
 							rule.parent.removeChild(rule);
@@ -39,7 +39,7 @@ const plugin = (options = {}) => {
 			}
 		},
 		postcssPlugin: 'postcss-filter-rules',
-	}
+	};
 };
 
 plugin.postcss = true;
