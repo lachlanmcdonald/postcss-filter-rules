@@ -4,60 +4,61 @@ const plugin = require('./');
 
 const run = (input, output, options) => {
 	return postcss([
-		plugin(options)
+		plugin(options),
 	]).process(input, {
-		from: null
+		from: null,
 	}).then(result => {
 		expect(result.css).toEqual(output);
 		expect(result.warnings()).toHaveLength(0);
 	});
 };
 
-let sampleCharset = '@charset "UTF-8";';
-let sampleImport = '@import "/css/sample.css";';
-let sampleKeyframes;
-let sampleFontFace;
+const sampleCharset = '@charset "UTF-8";';
+const sampleImport = '@import "/css/sample.css";';
 
-sampleKeyframes = `@keyframes test {
+const sampleKeyframes = `@keyframes test {
 	0% { color: red; }
 	100% { color: blue; }
 }`;
 
-sampleFontFace = `@font-face {
+const sampleFontFace = `@font-face {
 	font-family: "Bitstream Vera Serif Bold";
 	src: url("https://mdn.mozillademos.org/files/2468/VeraSeBd.ttf");
 }`;
 
 describe('defaults', () => {
 	it('does what the readme says', () => {
-		let input = `.styleguide span,
+		const input = `.styleguide span,
 	.button span {
 		color: red;
 	}
 	.button {
 		color: blue;
 	}`;
-		let output = `.styleguide span {
+		const output = `.styleguide span {
 		color: red;
 	}`;
+
 		return run(input, output, {
 			filter: (_selector, parts) => {
 				return parts.includes('.styleguide');
-			}
+			},
 		});
 	});
 
 	it('does nothing by default', () => {
-		let input = 'a {}';
+		const input = 'a {}';
+
 		return run(input, input, {});
 	});
 
 	it('keeps rules when filter returns true', () => {
-		let input = 'a {}';
+		const input = 'a {}';
+
 		return run(input, input, {
 			filter: () => {
 				return true;
-			}
+			},
 		});
 	});
 
@@ -65,7 +66,7 @@ describe('defaults', () => {
 		return run('a {} .b {} #c {}', '', {
 			filter: () => {
 				return false;
-			}
+			},
 		});
 	});
 });
@@ -76,35 +77,35 @@ describe('@media', () => {
 	});
 
 	it('does not remove @media', () => {
-		let input = '@media screen {.b {}} .b {} .c {}';
-		let output = '@media screen {.b {}} .b {}';
+		const input = '@media screen {.b {}} .b {} .c {}';
+		const output = '@media screen {.b {}} .b {}';
 
 		return run(input, output, {
 			filter: (_selector, parts) => {
 				return parts.includes('.b');
-			}
+			},
 		});
 	});
 
 	it('keeps @media when removing rules', () => {
-		let input = '@media screen {.b {}} @media screen {.c {}}';
-		let output = '@media screen {.b {}}';
+		const input = '@media screen {.b {}} @media screen {.c {}}';
+		const output = '@media screen {.b {}}';
 
 		return run(input, output, {
 			filter: (_selector, parts) => {
 				return parts.includes('.b');
-			}
+			},
 		});
 	});
 
 	it('keeps @media when removing rules with multiple selectors', () => {
-		let input = '@media screen {.b strong {}} @media screen {.c {}}';
-		let output = '@media screen {.b strong {}}';
+		const input = '@media screen {.b strong {}} @media screen {.c {}}';
+		const output = '@media screen {.b strong {}}';
 
 		return run(input, output, {
 			filter: (_selector, parts) => {
 				return parts.includes('.b');
-			}
+			},
 		});
 	});
 });
@@ -127,120 +128,122 @@ describe('at-rules', () => {
 	});
 
 	it('removes empty at-rules', () => {
-		let input = '@font-face {} @media {} @page {}';
+		const input = '@font-face {} @media {} @page {}';
+
 		return run(input, '', {});
 	});
 
 	it('removes all at-rules when keepAtRules is an empty array', () => {
-		let input = [sampleCharset, sampleImport, sampleKeyframes].join('\n');
+		const input = [sampleCharset, sampleImport, sampleKeyframes].join('\n');
+
 		return run(input, '', {
-			keepAtRules: []
+			keepAtRules: [],
 		});
 	});
 
 	it('keeps all at-rules when keepAtRules is true', () => {
-		let input = [sampleCharset, sampleImport, sampleFontFace, sampleKeyframes].join('\n');
+		const input = [sampleCharset, sampleImport, sampleFontFace, sampleKeyframes].join('\n');
 
 		return run(input, input, {
-			keepAtRules: true
+			keepAtRules: true,
 		});
 	});
 });
 
 describe('filter', () => {
 	it('removes all classes', () => {
-		let input = '#a {} .b {} .c {} #d {}';
-		let output = '#a {} #d {}';
+		const input = '#a {} .b {} .c {} #d {}';
+		const output = '#a {} #d {}';
 
 		return run(input, output, {
 			filter: selector => {
 				return !/\.-?[A-Z_a-z]+[\w-]*/.test(selector);
-			}
+			},
 		});
 	});
 
 	it('removes a specific class', () => {
-		let input = '#main .a strong {} #main .c strong {}';
-		let output = '#main .a strong {}';
+		const input = '#main .a strong {} #main .c strong {}';
+		const output = '#main .a strong {}';
 
 		return run(input, output, {
 			filter: (_selector, parts) => {
 				return !parts.includes('.c');
-			}
+			},
 		});
 	});
 
 	it('removes a selector starting with an ID', () => {
-		let input = '#main {} .c {}';
-		let output = '.c {}';
+		const input = '#main {} .c {}';
+		const output = '.c {}';
 
 		return run(input, output, {
 			filter: selector => {
 				return selector[0] !== '#';
-			}
+			},
 		});
 	});
 
 	it('removes a selector starting with an ID and whitespace', () => {
-		let input = '   #main {}    .c {}';
-		let output = '   .c {}';
+		const input = '   #main {}    .c {}';
+		const output = '   .c {}';
 
 		return run(input, output, {
 			filter: selector => {
 				return selector[0] !== '#';
-			}
+			},
 		});
 	});
 
 	it('removes a single selector', () => {
-		let input = '.a, .b, .c {}';
-		let output = '.b, .c {}';
+		const input = '.a, .b, .c {}';
+		const output = '.b, .c {}';
 
 		return run(input, output, {
 			filter: (_selector, parts) => {
 				return !parts.includes('.a');
-			}
+			},
 		});
 	});
 
 	it('removes multiple selectors', () => {
-		let input = '.a, .b, .c {}';
-		let output = '.a {}';
+		const input = '.a, .b, .c {}';
+		const output = '.a {}';
 
 		return run(input, output, {
 			filter: (_selector, parts) => {
 				return !parts.includes('.b') && !parts.includes('.c');
-			}
+			},
 		});
 	});
 
 	it('removes adjacent sibling selectors', () => {
-		let input = '.a, .b + .c {} .b+.c {}';
-		let output = '.a {}';
+		const input = '.a, .b + .c {} .b+.c {}';
+		const output = '.a {}';
 
 		return run(input, output, {
 			filter: selector => {
 				return !selector.includes('+');
-			}
+			},
 		});
 	});
 
 	it('removes direct sibling selectors', () => {
-		let input = '.a, .b ~ .c {} .b~.c {}';
-		let output = '.a {}';
+		const input = '.a, .b ~ .c {} .b~.c {}';
+		const output = '.a {}';
 
 		return run(input, output, {
 			filter: selector => {
 				return !selector.includes('~');
-			}
+			},
 		});
 	});
 });
 
 describe('options', () => {
 	it('allows overriding the splitFunction callback', () => {
-		let input = '.a {}';
-		let output = '.a {}';
+		const input = '.a {}';
+		const output = '.a {}';
 
 		return run(input, output, {
 			splitFunction: selector => selector,
@@ -248,7 +251,7 @@ describe('options', () => {
 				expect(parts).toBe(selector);
 
 				return true;
-			}
+			},
 		});
 	});
 });

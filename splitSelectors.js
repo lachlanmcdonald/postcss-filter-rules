@@ -5,15 +5,18 @@ const processor = parser(root => {
 });
 
 module.exports = selector => {
-	let result = [];
-	let astResult = processor.astSync(selector, {
-		lossless: false
+	const result = [];
+	const astResult = processor.astSync(selector, {
+		lossless: false,
 	});
 
 	let combineWithLast = false;
+
 	astResult.nodes[0].nodes.forEach(x => {
-		if (x.type !== 'combinator') {
-			let xs = x.toString();
+		if (x.type === 'combinator') {
+			combineWithLast = false;
+		} else {
+			const xs = x.toString();
 
 			if (combineWithLast) {
 				result[result.length - 1] += xs;
@@ -21,8 +24,6 @@ module.exports = selector => {
 				result.push(xs);
 			}
 			combineWithLast = true;
-		} else {
-			combineWithLast = false;
 		}
 	});
 

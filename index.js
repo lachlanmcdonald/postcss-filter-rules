@@ -3,7 +3,7 @@ const splitSelectors = require('./splitSelectors');
 const DEFAULT_SAFE_AT_RULES = ['charset', 'import', 'keyframes'];
 const REMOVE_AT_RULES = ['font-face', 'charset', 'import', 'keyframes'];
 
-const plugin = (options) => {
+const plugin = options => {
 	options = options || {};
 
 	options.filter = options.filter || (() => {
@@ -18,7 +18,7 @@ const plugin = (options) => {
 
 	return root => {
 		root.walkRules(rule => {
-			let selectors = rule.selectors.slice().filter(selector => {
+			const selectors = rule.selectors.slice().filter(selector => {
 				return options.filter(selector, options.splitFunction(selector));
 			});
 
@@ -32,8 +32,8 @@ const plugin = (options) => {
 		if (options.keepAtRules !== true) {
 			root.walkAtRules(rule => {
 				if (!options.keepAtRules.includes(rule.name)) {
-					let isEmpty = Array.isArray(rule.nodes) && rule.nodes.length === 0;
-					let removeByDefault = REMOVE_AT_RULES.includes(rule.name);
+					const isEmpty = Array.isArray(rule.nodes) && rule.nodes.length === 0;
+					const removeByDefault = REMOVE_AT_RULES.includes(rule.name);
 
 					if (isEmpty || removeByDefault) {
 						rule.parent.removeChild(rule);
