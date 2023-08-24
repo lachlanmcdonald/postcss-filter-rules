@@ -30,7 +30,7 @@ Type: `Function`
 
 Function used to filter selectors. Called for each selector in a rule.
 
-- Selectors are kept if the function returns `true`, otherwise they are removed.
+- Selectors are kept if the function returns a truthy value, otherwise they are removed.
 - If all of the selectors for a rule are removed, the rule is also removed.
 - If all rules within an [at-rule] are removed, the block itself is also removed.
 
